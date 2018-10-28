@@ -8,13 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		2B5E8B282184F5EF00604744 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B272184F5EF00604744 /* AppDelegate.swift */; };
-		2B5E8B2A2184F5EF00604744 /* FirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B292184F5EF00604744 /* FirstViewController.swift */; };
-		2B5E8B2C2184F5EF00604744 /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B2B2184F5EF00604744 /* SecondViewController.swift */; };
+		2B5E8B2A2184F5EF00604744 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B292184F5EF00604744 /* WalletViewController.swift */; };
+		2B5E8B2C2184F5EF00604744 /* ScanQRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B2B2184F5EF00604744 /* ScanQRViewController.swift */; };
 		2B5E8B2F2184F5EF00604744 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B5E8B2D2184F5EF00604744 /* Main.storyboard */; };
 		2B5E8B312184F5F100604744 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B5E8B302184F5F100604744 /* Assets.xcassets */; };
 		2B5E8B342184F5F100604744 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B5E8B322184F5F100604744 /* LaunchScreen.storyboard */; };
 		2B5E8B3F2184F5F100604744 /* flight_walletTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B3E2184F5F100604744 /* flight_walletTests.swift */; };
 		2B5E8B4A2184F5F100604744 /* flight_walletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B492184F5F100604744 /* flight_walletUITests.swift */; };
+		2B5E8B582184F88E00604744 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B572184F88E00604744 /* Wallet.swift */; };
+		2B5E8B5A21850E0E00604744 /* BitcoinWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B5921850E0E00604744 /* BitcoinWallet.swift */; };
+		2B5E8B5C21850E2B00604744 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B5B21850E2B00604744 /* Constants.swift */; };
+		2B5E8B5E21850F9500604744 /* EthereumWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B5D21850F9500604744 /* EthereumWallet.swift */; };
+		2B5E8B6021851B7E00604744 /* TransactionDetailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B5F21851B7E00604744 /* TransactionDetailedViewController.swift */; };
+		2B5E8B622185214E00604744 /* TransactionReceiptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B612185214E00604744 /* TransactionReceiptViewController.swift */; };
+		2B5E8B6421852FAC00604744 /* ShowQRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B6321852FAC00604744 /* ShowQRViewController.swift */; };
+		2B5E8B662185332700604744 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B652185332700604744 /* MainController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,8 +45,8 @@
 /* Begin PBXFileReference section */
 		2B5E8B242184F5EF00604744 /* flight.wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flight.wallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B5E8B272184F5EF00604744 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2B5E8B292184F5EF00604744 /* FirstViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstViewController.swift; sourceTree = "<group>"; };
-		2B5E8B2B2184F5EF00604744 /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
+		2B5E8B292184F5EF00604744 /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
+		2B5E8B2B2184F5EF00604744 /* ScanQRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanQRViewController.swift; sourceTree = "<group>"; };
 		2B5E8B2E2184F5EF00604744 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2B5E8B302184F5F100604744 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2B5E8B332184F5F100604744 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +57,14 @@
 		2B5E8B452184F5F100604744 /* flight.walletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = flight.walletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B5E8B492184F5F100604744 /* flight_walletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = flight_walletUITests.swift; sourceTree = "<group>"; };
 		2B5E8B4B2184F5F100604744 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B5E8B572184F88E00604744 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
+		2B5E8B5921850E0E00604744 /* BitcoinWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitcoinWallet.swift; sourceTree = "<group>"; };
+		2B5E8B5B21850E2B00604744 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		2B5E8B5D21850F9500604744 /* EthereumWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EthereumWallet.swift; sourceTree = "<group>"; };
+		2B5E8B5F21851B7E00604744 /* TransactionDetailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailedViewController.swift; sourceTree = "<group>"; };
+		2B5E8B612185214E00604744 /* TransactionReceiptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionReceiptViewController.swift; sourceTree = "<group>"; };
+		2B5E8B6321852FAC00604744 /* ShowQRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRViewController.swift; sourceTree = "<group>"; };
+		2B5E8B652185332700604744 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,12 +116,20 @@
 			isa = PBXGroup;
 			children = (
 				2B5E8B272184F5EF00604744 /* AppDelegate.swift */,
-				2B5E8B292184F5EF00604744 /* FirstViewController.swift */,
-				2B5E8B2B2184F5EF00604744 /* SecondViewController.swift */,
+				2B5E8B652185332700604744 /* MainController.swift */,
+				2B5E8B292184F5EF00604744 /* WalletViewController.swift */,
+				2B5E8B2B2184F5EF00604744 /* ScanQRViewController.swift */,
+				2B5E8B6321852FAC00604744 /* ShowQRViewController.swift */,
+				2B5E8B612185214E00604744 /* TransactionReceiptViewController.swift */,
+				2B5E8B5F21851B7E00604744 /* TransactionDetailedViewController.swift */,
 				2B5E8B2D2184F5EF00604744 /* Main.storyboard */,
 				2B5E8B302184F5F100604744 /* Assets.xcassets */,
 				2B5E8B322184F5F100604744 /* LaunchScreen.storyboard */,
 				2B5E8B352184F5F100604744 /* Info.plist */,
+				2B5E8B572184F88E00604744 /* Wallet.swift */,
+				2B5E8B5921850E0E00604744 /* BitcoinWallet.swift */,
+				2B5E8B5D21850F9500604744 /* EthereumWallet.swift */,
+				2B5E8B5B21850E2B00604744 /* Constants.swift */,
 			);
 			path = flight.wallet;
 			sourceTree = "<group>";
@@ -259,9 +283,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B5E8B2C2184F5EF00604744 /* SecondViewController.swift in Sources */,
+				2B5E8B622185214E00604744 /* TransactionReceiptViewController.swift in Sources */,
+				2B5E8B582184F88E00604744 /* Wallet.swift in Sources */,
+				2B5E8B2C2184F5EF00604744 /* ScanQRViewController.swift in Sources */,
 				2B5E8B282184F5EF00604744 /* AppDelegate.swift in Sources */,
-				2B5E8B2A2184F5EF00604744 /* FirstViewController.swift in Sources */,
+				2B5E8B6421852FAC00604744 /* ShowQRViewController.swift in Sources */,
+				2B5E8B5A21850E0E00604744 /* BitcoinWallet.swift in Sources */,
+				2B5E8B2A2184F5EF00604744 /* WalletViewController.swift in Sources */,
+				2B5E8B662185332700604744 /* MainController.swift in Sources */,
+				2B5E8B5E21850F9500604744 /* EthereumWallet.swift in Sources */,
+				2B5E8B5C21850E2B00604744 /* Constants.swift in Sources */,
+				2B5E8B6021851B7E00604744 /* TransactionDetailedViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
