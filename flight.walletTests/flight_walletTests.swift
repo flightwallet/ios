@@ -19,16 +19,20 @@ class flight_walletTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testETH() {
+        let privateKey = "0xd63264601ef2d420fe05decf1e3f7756b2826d69c33d16b7dd1fb5b0d79fe91d"
+        let wallet = EthereumWallet(from: privateKey)
+        
+        
+        
+        
+        
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    func testBTC() {
+        let privateKey = "cDfds"
+        
+        
     }
-
 }

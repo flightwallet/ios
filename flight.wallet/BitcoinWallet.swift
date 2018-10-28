@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import secp256k1
 
 struct BitcoinTransaction: Transaction {
     
@@ -33,6 +34,7 @@ class BitcoinWallet: CryptoWallet {
     ]
     
     required init(from seed: String) {
+        
 //        let privateKey = PrivateKey(network: .testnet) // You can choose .mainnet or .testnet
 //        let wallet = Wallet(privateKey: privateKey)
 //

@@ -74,7 +74,7 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             qrCodePreview.layer.borderColor = UIColor.green.cgColor
             qrCodePreview.layer.borderWidth = 2
             view.addSubview(qrCodePreview)
-            view.bringSubviewToFront(qrCodePreview)
+            view.bringSubview(toFront: qrCodePreview)
         }
     }
     

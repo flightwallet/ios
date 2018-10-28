@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Web3
 
 class EthereumWallet: CryptoWallet {
     
@@ -17,6 +18,29 @@ class EthereumWallet: CryptoWallet {
     ]
     
     required init(from seed: String) {
+        let privateKey = try! EthereumPrivateKey(hexPrivateKey: seed == "" ? "0xa26da69ed1df3ba4bb2a231d506b711eace012f1bd2571dfbfff9650b03375af" : seed)
+        
+        do {
+            
+            let address = try EthereumAddress(hex: "0x17dA6A8B86578CEC4525945A355E8384025fa5Af", eip55: true)
+            
+            let tx = EthereumTransaction(
+                nonce: 200,
+                gasPrice: EthereumQuantity(quantity: 21.gwei),
+                gas: 21000,
+                to: address,
+                value: EthereumQuantity(quantity: 1.eth)
+            )
+            
+            print(tx)
+            
+            let signed = try tx.sign(with: privateKey, chainId: 0)
+            
+            print(signed)
+            
+        } catch {
+            print(error)
+        }
         
     }
     

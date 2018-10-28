@@ -29,7 +29,7 @@ class flight_walletUITests: XCTestCase {
     func testExample() {
         XCUIApplication().toolbars["Toolbar"].buttons["PAY"].tap()
         
-        XCTAssert("should not fail")
+        XCTAssertTrue(true, "should not fail")
     }
 
 }
