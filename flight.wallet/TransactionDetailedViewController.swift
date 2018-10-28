@@ -19,5 +19,8 @@ class TransactionDetailedViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fromAddressCell?.addressLabel?.text = "0x17dA6A8B86578CEC4525945A355E8384025fa5Af"
+        
+        toAddressCell?.addressLabel?.text = "0x408AcEa2C9696f3c238A45b189683B5eDA9b763f"
     }
 }

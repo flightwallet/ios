@@ -41,7 +41,10 @@ class EthereumWallet: CryptoWallet {
     }
     
     func decode(tx: String) -> Transaction? {
-        
+        jsEngine.runJS(code: "1+1") {
+            result, error in
+            print("JS WORKS", result as Any)
+        }
         return nil
     }
     

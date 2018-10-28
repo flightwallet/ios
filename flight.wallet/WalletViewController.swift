@@ -11,19 +11,15 @@ import UIKit
 class WalletViewController: UIViewController {
     let wallet = Wallet.instance
     var addresses: [Address] = []
-    var selectedChain: Chain?
+    var selectedAddress: Address?
     
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        wallet.loaded {
-            self.addresses = self.wallet.getAddresses()
-            self.tableView.reloadData()
-            print(self.addresses)
-        }
-        
+        self.addresses = self.wallet.getAddresses()
+
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -31,8 +27,20 @@ class WalletViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? ScanQRViewController {
             vc.wallet = wallet
-            vc.chain = selectedChain
+            vc.address = selectedAddress
         }
+        
+        if let vc = segue.destination as? ShowQRViewController {
+            if segue.identifier == "showAddressSegue" {
+                vc.data = selectedAddress?.body
+            } else {
+                
+            }
+        }
+    }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        return selectedAddress != nil
     }
     
     @IBAction func scanQRCode(_ sender: Any) {
@@ -42,7 +50,7 @@ class WalletViewController: UIViewController {
 
 extension WalletViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        return 100
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,7 +72,7 @@ extension WalletViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let address = addresses[indexPath.row]
-        selectedChain = address.type
+        selectedAddress = address
     }
 }
 
@@ -73,6 +81,12 @@ class AddressTableViewCell: UITableViewCell {
     @IBOutlet weak var chainLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var accountNameLabel: UILabel!
+    
+    @IBInspectable var address: String? {
+        didSet {
+            addressLabel?.text = address
+        }
+    }
     
     func setData(_ address: Address) {
         switch (address.type) {

@@ -9,8 +9,14 @@
 import Foundation
 import UIKit
 
+enum QRType {
+    case SignedTransaction
+    case Address
+}
+
 class ShowQRViewController: UIViewController {
     var data: String?
+    var type: QRType!
     
     var qrcodeImage: CIImage!
     
@@ -29,13 +35,28 @@ class ShowQRViewController: UIViewController {
             return
         }
         
-        if let filter = CIFilter(name: "CIQRCodeGenerator") {
-            filter.setValue(data, forKey: "inputMessage")
-            filter.setValue("Q", forKey: "inputCorrectionLevel")
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return }
+        
+        filter.setValue(data, forKey: "inputMessage")
+        filter.setValue("Q", forKey: "inputCorrectionLevel")
             
-            qrcodeImage = filter.outputImage
+        qrcodeImage = filter.outputImage
+    
+        let scaleX = imgQRCode.frame.size.width / qrcodeImage.extent.size.width
+        let scaleY = imgQRCode.frame.size.height / qrcodeImage.extent.size.height
+        
+        let transformedImage = qrcodeImage.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
             
-            imgQRCode.image = UIImage(ciImage: qrcodeImage)
+        imgQRCode.image = UIImage(ciImage: transformedImage)
+    
+        qrcodeImage = nil
+    }
+    
+    @IBAction func proceed(_ sender: Any) {
+        if type == .SignedTransaction {
+            performSegue(withIdentifier: "goHomeSegue", sender: nil)
+        } else if type == .Address {
+            performSegue(withIdentifier: "scanTransactionSegue", sender: nil)
         }
     }
 }

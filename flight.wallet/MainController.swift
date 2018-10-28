@@ -22,8 +22,6 @@ class MainController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let insets = UIEdgeInsets(top: 20, left: 0, bottom: 60, right: 0)
-
         webView = WKWebView(frame: view.frame.insetBy(dx: 0, dy: 60))
         
         webView.isUserInteractionEnabled = true
@@ -82,7 +80,7 @@ extension MainController: JSEngine {
     func runJS(code: String, completion: @escaping (Any?, Error?) -> ()) {
         webView.evaluateJavaScript(code) {
             result, error in
-            print("JS Code \(result), \(error)")
+            print("JS Code \(String(describing: result)), \(String(describing: error))")
             completion(result, error)
         }
     }

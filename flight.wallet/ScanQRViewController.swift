@@ -19,9 +19,9 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var videoPreviewLayer: AVCaptureVideoPreviewLayer?
     
     var parsedTx: String?
-    var isExiting: Bool = false
+    var foundTransaction: Bool = false
     var wallet: Wallet!
-    var chain: Chain?
+    var address: Address?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,6 +80,9 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         // Check if the metadataObjects array is not nil and it contains at least one object.
+        if foundTransaction {
+            return
+        }
         
         if metadataObjects.count == 0 {
             qrCodePreview?.frame = CGRect.zero
@@ -95,6 +98,8 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             if let message = metadataObj.stringValue {
                 print(message)
                 messageLabel.text = message
+                
+                foundTransaction = true
                 transactionScanned(encodedTx: message)
             }
         }
@@ -114,6 +119,7 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         if let txController = segue.destination as? TransactionReceiptViewController {
             txController.parsedTx = parsedTx
             txController.wallet = wallet
+            txController.chain = address?.type
             
             self.parsedTx = nil
         }

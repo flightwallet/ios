@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import secp256k1
 
 struct BitcoinTransaction: Transaction {
     

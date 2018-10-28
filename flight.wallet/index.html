@@ -2,21 +2,6 @@
 <html>
     <head>
         <script>
-            function hideText() {
-                document.getElementById("demo").style.display = "none";
-            }
-        
-        function showText() {
-            document.getElementById("demo").style.display = "block";
-            window.webkit.messageHandlers.jsHandler.postMessage("trigger from JS");
-            
-            window.webkit.messageHandlers.updateApplicationState.postMessage("trigger from JS")
-            
-            setInterval(function () {
-                        
-                        window.webkit.messageHandlers.updateApplicationState.postMessage(Date.now())
-            }, 1000);
-        }
         
         
         function getBTCAddress(priv) {
@@ -26,8 +11,7 @@
             
             const address = bitcoin.payments.p2pkh({ pubkey: key.publicKey, network: bitcoin.networks.testnet }).address
             
-            document.getElementById("demo").innerHTML = "Address: " + address
-            
+           
             return address
         }
         
@@ -38,7 +22,7 @@
             const wallet = ethereumjs.Wallet.fromPrivateKey(_priv)
             
             const address = wallet.getAddressString()
-            document.getElementById("demo").innerHTML = "Address: " + address
+           
             return address
         }
         
@@ -63,12 +47,5 @@
         <script src="ethereumjs-wallet-hd-0.6.0.js"></script>
     </head>
     <body>
-        <h1 id="demo">FLIGHT.WALLET</h1>
-<!--        -->
-<!--        -->
-<!--        <input type="button" onclick="generate()" value="Show Text and Trigger Handler">-->
-<!--            -->
-<!--        <input type="button" onclick="showText()" value="Show Text and Trigger Handler">-->
-<!--        <input type="button" onclick="hideText()" value="Hide Text">-->
     </body>
 </html>
