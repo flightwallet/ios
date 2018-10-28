@@ -1,0 +1,6 @@
+framework module Pods_flight_wallet {
+  umbrella header "Pods-flight.wallet-umbrella.h"
+
+  export *
+  module * { export * }
+}
