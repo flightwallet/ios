@@ -23,6 +23,12 @@
 		2B5E8B622185214E00604744 /* TransactionReceiptViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B612185214E00604744 /* TransactionReceiptViewController.swift */; };
 		2B5E8B6421852FAC00604744 /* ShowQRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B6321852FAC00604744 /* ShowQRViewController.swift */; };
 		2B5E8B662185332700604744 /* MainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B652185332700604744 /* MainController.swift */; };
+		2B8C2BB621855F4E00F8A059 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 2B8C2BB521855F4E00F8A059 /* index.html */; };
+		2BB9B459218563AA005370BE /* web3.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B458218563AA005370BE /* web3.js */; };
+		2BB9B45B2185704D005370BE /* web3.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B45A2185704D005370BE /* web3.min.js */; };
+		2BB9B45E218570E7005370BE /* ethereumjs-tx-1.3.3.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B45C218570E6005370BE /* ethereumjs-tx-1.3.3.js */; };
+		2BB9B45F218570E7005370BE /* ethereumjs-wallet-hd-0.6.0.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B45D218570E6005370BE /* ethereumjs-wallet-hd-0.6.0.js */; };
+		2BB9B46121858050005370BE /* bitcoinjs-lib-4.0.2.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B46021858050005370BE /* bitcoinjs-lib-4.0.2.js */; };
 		346C6B7A0103C6AEC97ECEFC /* Pods_flight_wallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BE6502976BF5DDC649743F0 /* Pods_flight_wallet.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +74,12 @@
 		2B5E8B612185214E00604744 /* TransactionReceiptViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionReceiptViewController.swift; sourceTree = "<group>"; };
 		2B5E8B6321852FAC00604744 /* ShowQRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRViewController.swift; sourceTree = "<group>"; };
 		2B5E8B652185332700604744 /* MainController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainController.swift; sourceTree = "<group>"; };
+		2B8C2BB521855F4E00F8A059 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		2BB9B458218563AA005370BE /* web3.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = web3.js; path = ../../Downloads/web3.js; sourceTree = "<group>"; };
+		2BB9B45A2185704D005370BE /* web3.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = web3.min.js; sourceTree = "<group>"; };
+		2BB9B45C218570E6005370BE /* ethereumjs-tx-1.3.3.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "ethereumjs-tx-1.3.3.js"; sourceTree = "<group>"; };
+		2BB9B45D218570E6005370BE /* ethereumjs-wallet-hd-0.6.0.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "ethereumjs-wallet-hd-0.6.0.js"; sourceTree = "<group>"; };
+		2BB9B46021858050005370BE /* bitcoinjs-lib-4.0.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "bitcoinjs-lib-4.0.2.js"; sourceTree = "<group>"; };
 		AF567CF57885A9F5A49687A6 /* Pods-flight.wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flight.wallet.release.xcconfig"; path = "Pods/Target Support Files/Pods-flight.wallet/Pods-flight.wallet.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -137,6 +149,12 @@
 				2B5E8B5921850E0E00604744 /* BitcoinWallet.swift */,
 				2B5E8B5D21850F9500604744 /* EthereumWallet.swift */,
 				2B5E8B5B21850E2B00604744 /* Constants.swift */,
+				2BB9B45C218570E6005370BE /* ethereumjs-tx-1.3.3.js */,
+				2BB9B45D218570E6005370BE /* ethereumjs-wallet-hd-0.6.0.js */,
+				2B8C2BB521855F4E00F8A059 /* index.html */,
+				2BB9B46021858050005370BE /* bitcoinjs-lib-4.0.2.js */,
+				2BB9B45A2185704D005370BE /* web3.min.js */,
+				2BB9B458218563AA005370BE /* web3.js */,
 			);
 			path = flight.wallet;
 			sourceTree = "<group>";
@@ -282,8 +300,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2BB9B459218563AA005370BE /* web3.js in Resources */,
 				2B5E8B342184F5F100604744 /* LaunchScreen.storyboard in Resources */,
+				2BB9B45F218570E7005370BE /* ethereumjs-wallet-hd-0.6.0.js in Resources */,
+				2B8C2BB621855F4E00F8A059 /* index.html in Resources */,
+				2BB9B45B2185704D005370BE /* web3.min.js in Resources */,
+				2BB9B45E218570E7005370BE /* ethereumjs-tx-1.3.3.js in Resources */,
 				2B5E8B312184F5F100604744 /* Assets.xcassets in Resources */,
+				2BB9B46121858050005370BE /* bitcoinjs-lib-4.0.2.js in Resources */,
 				2B5E8B2F2184F5EF00604744 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

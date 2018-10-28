@@ -14,9 +14,10 @@ class Wallet {
     
     let seed_key = "flight.wallet.seed"
     
+    var isLoaded: Bool = false
+    
     static var instance: Wallet = {
         let wallet = Wallet.start()
-        wallet.initCrypto()
         return wallet
     }()
     
@@ -31,7 +32,7 @@ class Wallet {
     }
     
     static func generateSeed() -> String {
-        return ""
+        return "asd asd asd asd"
     }
     
     init(from seed: String) {
@@ -46,9 +47,43 @@ class Wallet {
         self.seed = seed
     }
     
-    func initCrypto() {
-        add(wallet: BitcoinWallet(from: seed))
-        add(wallet: EthereumWallet(from: seed))
+    func initCrypto(jsEngine engine: JSEngine) {
+        if isLoaded { return }
+        
+        let eth_priv = "d63264601ef2d420fe05decf1e3f7756b2826d69c33d16b7dd1fb5b0d79fe91d"
+        let btc_wif = "cRF7Az481ffsuhhZ28x32Xk4ZvPh98zhKv7hCi1pKjifqvv7AcuX"
+        
+        let btcWallet = BitcoinWallet(from: btc_wif, jsEngine: engine)
+        let ethWallet = EthereumWallet(from: eth_priv, jsEngine: engine)
+        
+        self.add(wallet: ethWallet)
+        self.add(wallet: btcWallet)
+        
+        ethWallet.loaded {_ in
+            btcWallet.loaded {_ in
+                self.isLoaded = true
+                
+                print(self.getAddresses())
+            }
+        }
+    }
+    
+    func loaded(completion: @escaping () -> ()) {
+        if isLoaded {
+            return completion()
+        }
+        
+        let ethWallet = wallets[.Ethereum]
+        let btcWallet = wallets[.Bitcoin]
+        
+        ethWallet?.loaded {_ in
+            btcWallet?.loaded {_ in
+                self.isLoaded = true
+                
+                print(self.getAddresses())
+                completion()
+            }
+        }
     }
     
     func add(wallet: CryptoWallet) {

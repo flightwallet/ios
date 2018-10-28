@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9pv-A4-QxB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="y0F-oI-Qfx">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -41,29 +42,29 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="587"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressCell" id="oxW-ST-fUy" customClass="AddressTableViewCell" customModule="flight_wallet" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressCell" rowHeight="132" id="oxW-ST-fUy" customClass="AddressTableViewCell" customModule="flight_wallet" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="132"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oxW-ST-fUy" id="t5U-Ct-1EP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="131.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bitcoin" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iZF-2Q-0zC">
-                                                    <rect key="frame" x="15" y="11" width="52.5" height="22"/>
+                                                    <rect key="frame" x="15" y="11" width="53" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tpb-Mx-8cm">
-                                                    <rect key="frame" x="0.0" y="33" width="375" height="98"/>
+                                                    <rect key="frame" x="15" y="31.5" width="345" height="89.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Spending Account" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vJ2-75-Gcw">
-                                                    <rect key="frame" x="175" y="0.0" width="200" height="43.5"/>
+                                                    <rect key="frame" x="175" y="0.0" width="200" height="23.5"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="200" id="qns-Ha-Gsm"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="qns-Ha-Gsm"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -71,14 +72,15 @@
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottomMargin" secondItem="vJ2-75-Gcw" secondAttribute="bottom" constant="-10.5" id="3Mc-hf-xC0"/>
+                                                <constraint firstItem="vJ2-75-Gcw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iZF-2Q-0zC" secondAttribute="trailing" constant="8" symbolic="YES" id="7nh-LQ-B7R"/>
                                                 <constraint firstItem="vJ2-75-Gcw" firstAttribute="top" secondItem="t5U-Ct-1EP" secondAttribute="topMargin" constant="-11" id="9gd-3v-Wfa"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Tpb-Mx-8cm" secondAttribute="trailing" constant="-15" id="BGM-74-FmL"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="Tpb-Mx-8cm" secondAttribute="bottom" constant="-98" id="Nmg-k2-dPe"/>
-                                                <constraint firstItem="Tpb-Mx-8cm" firstAttribute="leading" secondItem="t5U-Ct-1EP" secondAttribute="leadingMargin" constant="-15" id="Q4H-3g-hH4"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Tpb-Mx-8cm" secondAttribute="trailing" id="BGM-74-FmL"/>
+                                                <constraint firstItem="Tpb-Mx-8cm" firstAttribute="bottom" secondItem="t5U-Ct-1EP" secondAttribute="bottomMargin" id="LI4-Sc-Fgi"/>
+                                                <constraint firstItem="Tpb-Mx-8cm" firstAttribute="top" secondItem="vJ2-75-Gcw" secondAttribute="bottom" constant="8" id="Lh0-ef-Lf9"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Tpb-Mx-8cm" secondAttribute="bottom" id="Nmg-k2-dPe"/>
+                                                <constraint firstItem="Tpb-Mx-8cm" firstAttribute="leading" secondItem="t5U-Ct-1EP" secondAttribute="leadingMargin" id="Q4H-3g-hH4"/>
                                                 <constraint firstItem="Tpb-Mx-8cm" firstAttribute="top" secondItem="iZF-2Q-0zC" secondAttribute="bottom" id="ekb-00-SvY"/>
                                                 <constraint firstItem="iZF-2Q-0zC" firstAttribute="top" secondItem="t5U-Ct-1EP" secondAttribute="topMargin" id="i07-A6-VDH"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="iZF-2Q-0zC" secondAttribute="bottom" id="jcd-5n-0vI"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="vJ2-75-Gcw" secondAttribute="trailing" constant="-15" id="lFt-eE-LFy"/>
                                                 <constraint firstItem="iZF-2Q-0zC" firstAttribute="leading" secondItem="t5U-Ct-1EP" secondAttribute="leadingMargin" id="zpk-0y-lGW"/>
                                             </constraints>
@@ -119,18 +121,55 @@
                     </connections>
                 </swipeGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="857" y="113"/>
+            <point key="canvasLocation" x="856.79999999999995" y="112.89355322338831"/>
+        </scene>
+        <!--Main Controller-->
+        <scene sceneID="vYw-yp-gDZ">
+            <objects>
+                <viewController storyboardIdentifier="MainController" id="y0F-oI-Qfx" customClass="MainController" customModule="flight_wallet" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AG4-eJ-kFS">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L1M-HQ-wYs">
+                                <rect key="frame" x="0.0" y="607" width="375" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="60" id="KAw-c3-VCr"/>
+                                    <constraint firstAttribute="height" constant="60" id="n3Y-EP-laR"/>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="vMl-Fc-VQa"/>
+                                </constraints>
+                                <items>
+                                    <barButtonItem style="plain" id="MAo-fz-xnz">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Isf-a6-rGL">
+                                            <rect key="frame" x="16" y="4.5" width="343" height="51"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                            <state key="normal" title="PAY"/>
+                                            <connections>
+                                                <action selector="goToWallet:" destination="y0F-oI-Qfx" eventType="touchUpInside" id="nAZ-xO-PU7"/>
+                                                <segue destination="9pv-A4-QxB" kind="show" identifier="goToWallet" id="Jrv-tD-X2d"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="L1M-HQ-wYs" firstAttribute="leading" secondItem="43N-id-8ni" secondAttribute="leading" id="C6A-n6-Ud2"/>
+                            <constraint firstItem="L1M-HQ-wYs" firstAttribute="trailing" secondItem="43N-id-8ni" secondAttribute="trailing" id="UZQ-Or-yv1"/>
+                            <constraint firstItem="43N-id-8ni" firstAttribute="bottom" secondItem="L1M-HQ-wYs" secondAttribute="bottom" id="vEI-E1-Y7P"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="43N-id-8ni"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aRP-yq-yAS" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2631" y="1048"/>
         </scene>
         <!--ScanQR View Controller-->
         <scene sceneID="3NY-ud-F7B">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="23r-lv-ehF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="right" id="lWS-CA-WiK">
-                    <connections>
-                        <action selector="goToWallet:" destination="Ddg-J0-xFT" id="pwY-ll-Vup"/>
-                        <segue destination="9pv-A4-QxB" kind="show" id="R6K-2v-PkF"/>
-                    </connections>
-                </swipeGestureRecognizer>
                 <viewController id="Ddg-J0-xFT" customClass="ScanQRViewController" customModule="flight_wallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2um-5U-124">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
@@ -193,6 +232,13 @@
                         <segue destination="w3Z-OU-WsJ" kind="show" identifier="transactionScannedSegue" id="zO0-ac-6xo"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="23r-lv-ehF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="lWS-CA-WiK">
+                    <connections>
+                        <action selector="goToWallet:" destination="Ddg-J0-xFT" id="pwY-ll-Vup"/>
+                        <segue destination="9pv-A4-QxB" kind="show" id="R6K-2v-PkF"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1856.8" y="-365.66716641679164"/>
         </scene>
@@ -384,4 +430,7 @@
             <point key="canvasLocation" x="3761" y="-396"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="Jrv-tD-X2d"/>
+    </inferredMetricsTieBreakers>
 </document>

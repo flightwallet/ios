@@ -17,6 +17,8 @@ class ShowQRViewController: UIViewController {
     @IBOutlet weak var imgQRCode: UIImageView!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         if let data = data {
             showQR(message: data)
         }

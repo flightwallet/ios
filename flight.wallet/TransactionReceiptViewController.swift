@@ -16,6 +16,8 @@ class TransactionReceiptViewController: UIViewController {
     var chain: Chain?
     
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         if let chain = chain,
             let tx = parsedTx,
             let currencyWallet = wallet.wallets[chain] {

@@ -18,8 +18,12 @@ class WalletViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        addresses = wallet.getAddresses()
-        print(addresses)
+        wallet.loaded {
+            self.addresses = self.wallet.getAddresses()
+            self.tableView.reloadData()
+            print(self.addresses)
+        }
+        
         tableView.delegate = self
         tableView.dataSource = self
     }

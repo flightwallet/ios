@@ -32,7 +32,25 @@ class flight_walletTests: XCTestCase {
     
     func testBTC() {
         let privateKey = "cDfds"
+        let wallet = BitcoinWallet(from: privateKey)
         
+        let address = wallet.getAddress()
+        
+        XCTAssert(address != nil)
+    }
+    
+    func testJS() {
+        
+        let bundle = Bundle(for: type(of: self))
+        let storyboard = UIStoryboard(name: "Main", bundle: bundle)
+        let jsController = storyboard.instantiateViewController(withIdentifier: "MainController") as! MainController
+        _ = jsController.view
+        
+        
+        jsController.runJS(code: "getOne()") {
+            result, _ in
+            print(result)
+        }
         
     }
 }

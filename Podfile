@@ -5,4 +5,5 @@ use_frameworks!
 target 'flight.wallet' do
     pod 'secp256k1.swift'
     pod 'Web3'
+    pod 'ios-secp256k1'
 end

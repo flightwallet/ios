@@ -59,8 +59,9 @@ protocol CryptoWallet {
     var type: Chain { get }
     var addresses: [Address] { get }
     
-    init(from seed: String)
+    init(from seed: String, jsEngine: JSEngine)
     
+    func loaded(completion: @escaping (Address?) -> ())
     func decode(tx: Transaction) -> DecodedTransaction?
     func decode(tx: String) -> Transaction?
     func sign(tx: Transaction) -> SignedTransaction?

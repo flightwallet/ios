@@ -17,6 +17,7 @@ class TransactionDetailedViewController: UITableViewController {
     @IBOutlet weak var toAddressCell: AddressTableViewCell!
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         
     }
 }

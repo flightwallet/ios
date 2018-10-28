@@ -30,43 +30,27 @@ struct BitcoinTransaction: Transaction {
 class BitcoinWallet: CryptoWallet {
     var type = Chain.Bitcoin
     var addresses: [Address] = [
-        Address(network: .Mainnet, type: .Bitcoin, path: "m/44/0/0/1", friendlyName: "Address 1", body: "1Pdasdasds")
+//        Address(network: .Testnet, type: .Bitcoin, path: "m/44/0/0/1", friendlyName: "Default Address", body: "1Pdasdasds")
     ]
     
-    required init(from seed: String) {
-        
-//        let privateKey = PrivateKey(network: .testnet) // You can choose .mainnet or .testnet
-//        let wallet = Wallet(privateKey: privateKey)
-//
-//        let wallet = try Wallet(wif: "92pMamV6jNyEq9pDpY4f6nBy9KpV2cfJT4L5zDUYiGqyQHJfF1K")
-//
-//        // Generate mnemonic
-//        let mnemonic = try Mnemonic.generate()
-//
-//        // Generate seed from the mnemonic
-//        let seed = Mnemonic.seed(mnemonic: mnemonic)
-//
-//        let wallet = HDWallet(seed: seed, network: .testnet)
-//
-//        let mnemonic = try Mnemonic.generate()
-//        let seed = Mnemonic.seed(mnemonic: mnemonic)
-        
-        
-        
-//        let privateKey = HDPrivateKey(seed: seed, network: .testnet)
-//        
-//        // m/0'
-//        let m0prv = try! privateKey.derived(at: 0, hardened: true)
-//        
-//        // m/0'/1
-//        let m01prv = try! m0prv.derived(at: 1)
-//        
-//        // m/0'/1/2'
-//        let m012prv = try! m01prv.derived(at: 2, hardened: true)
-    }
+    var jsEngine: JSEngine!
+    var seed: String
     
-    func getAddress () -> Address {
-        return Address(network: .Mainnet, type: self.type, path: "m/44/0/0/1", friendlyName: "Address 1", body: "1KasdasdasD")
+    required init(from seed: String, jsEngine: JSEngine) {
+        self.jsEngine = jsEngine
+        self.seed = seed
+    }
+
+    func loaded(completion: @escaping (Address?) -> ()) {
+        jsEngine.runJS(code: "getBTCAddress(\"\(seed)\")") {
+            result, error in
+            if let addressString = result as? String {
+                let address = Address(network: .Testnet, type: .Bitcoin, path: "", friendlyName: "TEST BITCOIN", body: addressString)
+                
+                self.addresses.append(address)
+                completion(address)
+            }
+        }
     }
     
     func sign(tx: Transaction) -> SignedTransaction? {
