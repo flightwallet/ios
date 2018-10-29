@@ -30,7 +30,7 @@
                                             <rect key="frame" x="16" y="4.5" width="343" height="51"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="32"/>
-                                            <state key="normal" title="PAY"/>
+                                            <state key="normal" title="SELECT ACCOUNT"/>
                                             <connections>
                                                 <segue destination="nbh-eY-s7W" kind="show" identifier="showAddressSegue" id="x3S-ea-Ubn"/>
                                             </connections>
@@ -111,6 +111,7 @@
                         </connections>
                     </view>
                     <connections>
+                        <outlet property="payButton" destination="CLv-e1-qs6" id="OKX-Xo-Dwp"/>
                         <outlet property="tableView" destination="Z4a-05-V80" id="UXo-S9-ZJa"/>
                     </connections>
                 </viewController>
@@ -585,6 +586,6 @@
         <image name="flight.wallet" width="1024" height="1024"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Jrv-tD-X2d"/>
+        <segue reference="R6K-2v-PkF"/>
     </inferredMetricsTieBreakers>
 </document>

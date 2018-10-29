@@ -11,8 +11,20 @@ import UIKit
 class WalletViewController: UIViewController {
     let wallet = Wallet.instance
     var addresses: [Address] = []
-    var selectedAddress: Address?
+    var selectedAddress: Address? {
+        didSet {
+            if selectedAddress == nil {
+                // SELECT
+                payButton.setTitle("SELECT ACCOUNT", for: .normal)
+            } else {
+                // PAY
+                payButton.setTitle("PAY", for: .normal)
+            }
+        }
+    }
     
+    
+    @IBOutlet weak var payButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
