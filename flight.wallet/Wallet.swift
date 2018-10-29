@@ -7,12 +7,19 @@
 //
 
 import Foundation
+import CoreBitcoin
+import CryptoSwift
+
+enum InitError: Error {
+    case LoadMnemonicError
+    case SaveMnemonicError
+}
 
 class Wallet {
     var wallets: [Chain: CryptoWallet] = [:]
-    private var seed: String
+    private var seed: Data
     
-    let seed_key = "flight.wallet.seed"
+    static let seed_key = "flight.walletx.seed"
     
     var isLoaded: Bool = false
     
@@ -27,33 +34,72 @@ class Wallet {
         } else {
             let seed = Wallet.generateSeed()
             let wallet = Wallet(from: seed)
+            
             return wallet
         }
     }
     
-    static func generateSeed() -> String {
-        return "solution endless depart clog hold rubber work use area enter visual govern"
+    static func storeMnemonic(data: Data, defaults: UserDefaults = .standard) throws {
+        let mnemonic = BTCMnemonic(data: data)
+        
+        guard mnemonic?.data == data else {
+            throw InitError.SaveMnemonicError
+        }
+        
+        defaults.set(data, forKey: seed_key)
     }
     
-    init(from seed: String) {
+    static func loadMnenomic(defaults: UserDefaults = .standard) throws -> Data? {
+        guard let data = defaults.data(forKey: seed_key) else {
+            throw InitError.LoadMnemonicError
+        }
+        
+        let mnemonic = BTCMnemonic(data: data)
+        
+        guard mnemonic?.data == data else {
+            throw InitError.LoadMnemonicError
+        }
+        
+        print(mnemonic?.words as! [String])
+        
+        return data
+    }
+    
+    static func generateSeed() -> Data {
+        var bytes = [UInt8](repeating: 0, count: 32)
+        SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+        
+        let entropy = Data(bytes: bytes)
+        
+        let mnemonic = BTCMnemonic(entropy: entropy, password: "", wordListType: .english)!
+
+        try? Wallet.storeMnemonic(data: mnemonic.data)
+        
+        print(mnemonic.words as! [String])
+        
+        return mnemonic.seed
+    }
+    
+    init(from seed: Data) {
         self.seed = seed
     }
     
     init?(defaults: UserDefaults) {
-        guard let seed = defaults.string(forKey: seed_key) else {
+        guard let data = try? Wallet.loadMnenomic(defaults: defaults) else {
             return nil
         }
         
-        self.seed = seed
+        let mnemonic = BTCMnemonic(data: data)!
+        
+        
+        self.seed = mnemonic.seed
     }
     
     func initCrypto() {
         if isLoaded { return }
     
-        let mnemonic = Wallet.generateSeed()
-        
-        let btcWallet = BitcoinWallet(from: mnemonic)
-        let ethWallet = EthereumWallet(from: mnemonic)
+        let btcWallet = BitcoinWallet(from: seed)
+        let ethWallet = EthereumWallet(from: seed)
         
         self.add(wallet: btcWallet)
         self.add(wallet: ethWallet)
@@ -79,10 +125,6 @@ class Wallet {
     
     func add(wallet: CryptoWallet) {
         wallets[wallet.type] = wallet
-    }
-    
-    func storeSeed(defaults: UserDefaults) {
-        defaults.set(self.seed, forKey: seed_key)
     }
     
     func getAddresses() -> [Address] {

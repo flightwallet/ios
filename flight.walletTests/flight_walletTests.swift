@@ -20,37 +20,38 @@ class flight_walletTests: XCTestCase {
     }
 
     func testETH() {
-        let privateKey = "0xd63264601ef2d420fe05decf1e3f7756b2826d69c33d16b7dd1fb5b0d79fe91d"
+        let privateKey = "solution endless depart clog hold rubber work use area enter visual govern"
         let wallet = EthereumWallet(from: privateKey)
         
+        let address = wallet.generateAddress()
         
-        
+        XCTAssert(address != nil)
         
         
     }
 
     
     func testBTC() {
-        let privateKey = "cDfds"
+        let privateKey = "solution endless depart clog hold rubber work use area enter visual govern"
         let wallet = BitcoinWallet(from: privateKey)
         
-        let address = wallet.getAddress()
+        let address = wallet.generateAddress()
         
         XCTAssert(address != nil)
     }
     
-    func testJS() {
+    func testSignature() {
         
-        let bundle = Bundle(for: type(of: self))
-        let storyboard = UIStoryboard(name: "Main", bundle: bundle)
-        let jsController = storyboard.instantiateViewController(withIdentifier: "MainController") as! MainController
-        _ = jsController.view
+        let privateKey = "solution endless depart clog hold rubber work use area enter visual govern"
+        let wallet = BitcoinWallet(from: privateKey)
         
+        let rawtx = """
+01000000012b4fcd2309554dfab9bdfbdd9e558f776f760c377d4b8819ef0b364c35be54ae010000006b4830450221009f7dc9c4243dae374f99db15c075eb6de21a90f60ddafcbcee4c09302141479a0220579ba73c3b6ac75e938426c72546505da5258048a39df73e7e50870902f5a7950121033a117cc4d164984c1e8fb58f39f08a17a2e615d77d8f7a35a7d9cdeb9e93ef4cfeffffff0100e20400000000001976a91436963a21b49f701acf03dd1e778ab5774017b53c88ac00000000
+"""
         
-        jsController.runJS(code: "getOne()") {
-            result, _ in
-            print(result)
-        }
+        let signed = wallet.sign(rawtx)
         
+        print(signed)
     }
+
 }

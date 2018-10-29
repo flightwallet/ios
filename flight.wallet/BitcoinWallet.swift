@@ -33,23 +33,10 @@ class BitcoinWallet: CryptoWallet {
 //        Address(network: .Testnet, type: .Bitcoin, path: "m/44/0/0/1", friendlyName: "Default Address", body: "1Pdasdasds")
     ]
     
-    var seed: String
     var keychain: BTCKeychain!
     
-    required init(from seed: String) {
-        self.seed = seed
-        
-//        let mnemonic = BTCMnemonic(data: Data.init(base64Encoded: seed))
-        
-        let words = seed.split(separator: " ")
-        
-        print(words)
-        let mnemonic = BTCMnemonic(words: words, password: nil, wordListType: .english)
-        
-        
-        guard let _seed = mnemonic?.seed else { return }
-        
-        keychain = BTCKeychain(seed: _seed)
+    required init(from seed: Data) {
+        keychain = BTCKeychain(seed: seed)
     }
     
     func generateAddress(index: Int = 1) -> Address? {
