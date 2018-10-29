@@ -13,13 +13,15 @@ import CryptoSwift
 enum InitError: Error {
     case LoadMnemonicError
     case SaveMnemonicError
+    case MnemonicExistsError
+    case GeneratorError
 }
 
 class Wallet {
     var wallets: [Chain: CryptoWallet] = [:]
     private var seed: Data
     
-    static let seed_key = "flight.walletx.seed"
+    static let seed_key = "flight.wallet.seed"
     
     var isLoaded: Bool = false
     
@@ -41,6 +43,10 @@ class Wallet {
     
     static func storeMnemonic(data: Data, defaults: UserDefaults = .standard) throws {
         let mnemonic = BTCMnemonic(data: data)
+        
+        guard nil == defaults.data(forKey: seed_key) else {
+            throw InitError.MnemonicExistsError
+        }
         
         guard mnemonic?.data == data else {
             throw InitError.SaveMnemonicError
@@ -67,13 +73,17 @@ class Wallet {
     
     static func generateSeed() -> Data {
         var bytes = [UInt8](repeating: 0, count: 32)
-        SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+        let error = SecRandomCopyBytes(kSecRandomDefault, bytes.count, &bytes)
+        
+        guard error == 0 else {
+            fatalError("InitError.GeneratorError")
+        }
         
         let entropy = Data(bytes: bytes)
         
         let mnemonic = BTCMnemonic(entropy: entropy, password: "", wordListType: .english)!
 
-        try? Wallet.storeMnemonic(data: mnemonic.data)
+        try! Wallet.storeMnemonic(data: mnemonic.data)
         
         print(mnemonic.words as! [String])
         

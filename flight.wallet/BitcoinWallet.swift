@@ -36,11 +36,11 @@ class BitcoinWallet: CryptoWallet {
     var keychain: BTCKeychain!
     
     required init(from seed: Data) {
-        keychain = BTCKeychain(seed: seed)
+        keychain = BTCKeychain(seed: seed)!
     }
     
     func generateAddress(index: Int = 1) -> Address? {
-        let path = "m/44'/60'/0/0/\(index)"
+        let path = "m/44'/0'/0/0/\(index)"
         
         guard let btcAddress = keychain.key(withPath: path)?.address else { return nil }
             
