@@ -29,7 +29,7 @@
 		2BB9B45E218570E7005370BE /* ethereumjs-tx-1.3.3.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B45C218570E6005370BE /* ethereumjs-tx-1.3.3.js */; };
 		2BB9B45F218570E7005370BE /* ethereumjs-wallet-hd-0.6.0.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B45D218570E6005370BE /* ethereumjs-wallet-hd-0.6.0.js */; };
 		2BB9B46121858050005370BE /* bitcoinjs-lib-4.0.2.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B46021858050005370BE /* bitcoinjs-lib-4.0.2.js */; };
-		346C6B7A0103C6AEC97ECEFC /* Pods_flight_wallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BE6502976BF5DDC649743F0 /* Pods_flight_wallet.framework */; };
+		CEC814DA464AA83AD1B2E7DD /* libPods-flight.wallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D58E26CE835EE442E982C8B /* libPods-flight.wallet.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,7 +50,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0BE6502976BF5DDC649743F0 /* Pods_flight_wallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_flight_wallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1572D5C7567599BA4904F05D /* Pods-flight.wallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flight.wallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-flight.wallet/Pods-flight.wallet.debug.xcconfig"; sourceTree = "<group>"; };
 		2B5E8B242184F5EF00604744 /* flight.wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flight.wallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B5E8B272184F5EF00604744 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +79,7 @@
 		2BB9B45C218570E6005370BE /* ethereumjs-tx-1.3.3.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "ethereumjs-tx-1.3.3.js"; sourceTree = "<group>"; };
 		2BB9B45D218570E6005370BE /* ethereumjs-wallet-hd-0.6.0.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "ethereumjs-wallet-hd-0.6.0.js"; sourceTree = "<group>"; };
 		2BB9B46021858050005370BE /* bitcoinjs-lib-4.0.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "bitcoinjs-lib-4.0.2.js"; sourceTree = "<group>"; };
+		6D58E26CE835EE442E982C8B /* libPods-flight.wallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-flight.wallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF567CF57885A9F5A49687A6 /* Pods-flight.wallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flight.wallet.release.xcconfig"; path = "Pods/Target Support Files/Pods-flight.wallet/Pods-flight.wallet.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -88,7 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				346C6B7A0103C6AEC97ECEFC /* Pods_flight_wallet.framework in Frameworks */,
+				CEC814DA464AA83AD1B2E7DD /* libPods-flight.wallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,7 +180,7 @@
 		77F4DDD6C038BFE77BFB9AA5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				0BE6502976BF5DDC649743F0 /* Pods_flight_wallet.framework */,
+				6D58E26CE835EE442E982C8B /* libPods-flight.wallet.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -205,7 +205,6 @@
 				2B5E8B202184F5EF00604744 /* Sources */,
 				2B5E8B212184F5EF00604744 /* Frameworks */,
 				2B5E8B222184F5EF00604744 /* Resources */,
-				DCC56B2E164FDE8C420EFDF9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -345,32 +344,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DCC56B2E164FDE8C420EFDF9 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-flight.wallet/Pods-flight.wallet-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
-				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SipHash/SipHash.framework",
-				"${BUILT_PRODUCTS_DIR}/Web3/Web3.framework",
-				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SipHash.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Web3.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-flight.wallet/Pods-flight.wallet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -573,7 +546,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = flight.wallet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -597,7 +570,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = flight.wallet/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

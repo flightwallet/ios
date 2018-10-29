@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreBitcoin
 
 struct BitcoinTransaction: Transaction {
     
@@ -32,27 +33,83 @@ class BitcoinWallet: CryptoWallet {
 //        Address(network: .Testnet, type: .Bitcoin, path: "m/44/0/0/1", friendlyName: "Default Address", body: "1Pdasdasds")
     ]
     
-    var jsEngine: JSEngine!
     var seed: String
+    var keychain: BTCKeychain!
     
-    required init(from seed: String, jsEngine: JSEngine) {
-        self.jsEngine = jsEngine
+    required init(from seed: String) {
         self.seed = seed
+        
+//        let mnemonic = BTCMnemonic(data: Data.init(base64Encoded: seed))
+        
+        let words = seed.split(separator: " ")
+        
+        print(words)
+        let mnemonic = BTCMnemonic(words: words, password: nil, wordListType: .english)
+        
+        
+        guard let _seed = mnemonic?.seed else { return }
+        
+        keychain = BTCKeychain(seed: _seed)
     }
-
+    
+    func generateAddress(index: Int = 1) -> Address? {
+        let path = "m/44'/60'/0/0/\(index)"
+        
+        guard let btcAddress = keychain.key(withPath: path)?.address else { return nil }
+            
+        let addressString = btcAddress.string
+        
+        let address = Address(
+            network: .Testnet,
+            type: .Bitcoin,
+            path: path,
+            friendlyName: "Bitcoin Account",
+            body: addressString
+        )
+        
+        return address
+    }
+    
+    
     func loaded(completion: @escaping (Address?) -> ()) {
-        jsEngine.runJS(code: "getBTCAddress(\"\(seed)\")") {
-            result, error in
-            if let addressString = result as? String {
-                let address = Address(network: .Testnet, type: .Bitcoin, path: "", friendlyName: "TEST BITCOIN", body: addressString)
-                
-                self.addresses.append(address)
-                completion(address)
-            }
-        }
+        let _addrs = [
+            generateAddress(index: 1),
+            generateAddress(index: 2),
+            generateAddress(index: 3),
+            ]
+        
+        let addrs = _addrs.compactMap({ addr in addr })
+        
+        addresses += addrs
+        
+        completion(nil)
     }
     
     func sign(tx: Transaction) -> SignedTransaction? {
+        let rawhex = "0000000111"
+        
+        guard let unsigned_tx = BTCTransaction.init(hex: rawhex) else {
+            return nil
+        }
+        
+        unsigned_tx.inputs.forEach { input in
+            if let input = input as? BTCTransactionInput {
+                
+                let index = input.transactionOutput.index
+                let script = input.signatureScript
+                
+                do {
+                    let sig = try unsigned_tx.signatureHash(for: script, inputIndex: index, hashType: .SIGHASH_ALL)
+                    
+                    print(sig)
+                 
+//                    input.signatureScript.append(other: sig)
+                } catch {
+                    print(error)
+                }
+            }
+        }
+        
         return nil
     }
     

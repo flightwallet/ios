@@ -1,7 +1,12 @@
 PODS:
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
+  - CoreBitcoin (0.6.8.1):
+    - ISO8601DateFormatter
+    - OpenSSL-Universal (= 1.0.1.16)
   - CryptoSwift (0.13.0)
+  - ISO8601DateFormatter (0.8)
+  - OpenSSL-Universal (1.0.1.16)
   - secp256k1.swift (0.1.4)
   - SipHash (1.2.2)
   - Web3 (0.3.1):
@@ -15,23 +20,30 @@ PODS:
     - Web3/Core
 
 DEPENDENCIES:
+  - CoreBitcoin
   - Web3
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - BigInt
+    - CoreBitcoin
     - CryptoSwift
+    - ISO8601DateFormatter
+    - OpenSSL-Universal
     - secp256k1.swift
     - SipHash
     - Web3
 
 SPEC CHECKSUMS:
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  CoreBitcoin: 4ac6f6a61e543f08399c2fe57496d4fdcbaf74f9
   CryptoSwift: 16e78bebf567bad1c87b2d58f6547f25b74c31aa
+  ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
+  OpenSSL-Universal: 85ef63bf81d0741b03c8719cd29685c37c59518d
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   Web3: e9be7ef88585e252df50abc28538d6e4691c786e
 
-PODFILE CHECKSUM: 6362616ef52bf13877914e7f0f6b4556fe4a9f1e
+PODFILE CHECKSUM: 559d067057263929f5432aba0b6c9c1ad7025dec
 
 COCOAPODS: 1.5.3

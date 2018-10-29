@@ -32,7 +32,7 @@ class Wallet {
     }
     
     static func generateSeed() -> String {
-        return "asd asd asd asd"
+        return "solution endless depart clog hold rubber work use area enter visual govern"
     }
     
     init(from seed: String) {
@@ -47,25 +47,16 @@ class Wallet {
         self.seed = seed
     }
     
-    func initCrypto(jsEngine engine: JSEngine) {
+    func initCrypto() {
         if isLoaded { return }
+    
+        let mnemonic = Wallet.generateSeed()
         
-        let eth_priv = "d63264601ef2d420fe05decf1e3f7756b2826d69c33d16b7dd1fb5b0d79fe91d"
-        let btc_wif = "cRF7Az481ffsuhhZ28x32Xk4ZvPh98zhKv7hCi1pKjifqvv7AcuX"
+        let btcWallet = BitcoinWallet(from: mnemonic)
+        let ethWallet = EthereumWallet(from: mnemonic)
         
-        let btcWallet = BitcoinWallet(from: btc_wif, jsEngine: engine)
-        let ethWallet = EthereumWallet(from: eth_priv, jsEngine: engine)
-        
-        self.add(wallet: ethWallet)
         self.add(wallet: btcWallet)
-        
-        ethWallet.loaded {_ in
-            btcWallet.loaded {_ in
-                self.isLoaded = true
-                
-                print(self.getAddresses())
-            }
-        }
+        self.add(wallet: ethWallet)
     }
     
     func loaded(completion: @escaping () -> ()) {

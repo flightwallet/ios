@@ -55,7 +55,7 @@ class MainController: UIViewController {
     }
     
     @IBAction func goToWallet(_ sender: Any) {
-        wallet.initCrypto(jsEngine: self)
+        wallet.initCrypto()
         wallet.loaded {
             self.performSegue(withIdentifier: "goToWallet", sender: nil)
         }
