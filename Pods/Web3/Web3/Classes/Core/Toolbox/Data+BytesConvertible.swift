@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Data: BytesConvertible {
+extension Data {
 
     /**
      * Returns self represented as a byte array.

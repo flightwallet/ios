@@ -52,7 +52,7 @@ protocol SignedTransaction {
     var type: Chain { get }
     var body: String { get }
     var unsigned: Transaction { get }
-    var signature: String { get }
+    var signatures: [String] { get }
 }
 
 protocol CryptoWallet {

@@ -32,7 +32,12 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     
     func initPreview() {
         do {
-            guard let captureDevice = AVCaptureDevice.default(for: AVMediaType.video) else {
+            let type = AVCaptureDevice.DeviceType(rawValue: "front_camera")
+            let deviceDiscovery = AVCaptureDevice.DiscoverySession(deviceTypes: [type], mediaType: .video, position: .front)
+            
+            let frontCamera = deviceDiscovery.devices.first { device in device.position == .front }
+            
+            guard let captureDevice = frontCamera else {
                 return
             }
             
@@ -74,7 +79,7 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             qrCodePreview.layer.borderColor = UIColor.green.cgColor
             qrCodePreview.layer.borderWidth = 2
             view.addSubview(qrCodePreview)
-            view.bringSubview(toFront: qrCodePreview)
+            view.bringSubviewToFront(qrCodePreview)
         }
     }
     

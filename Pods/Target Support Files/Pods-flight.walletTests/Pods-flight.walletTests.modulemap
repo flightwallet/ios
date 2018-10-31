@@ -1,0 +1,6 @@
+module Pods_flight_walletTests {
+  umbrella header "Pods-flight.walletTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -8,32 +8,38 @@
 
 import XCTest
 @testable import flight_wallet
+import CoreBitcoin
 
 class flight_walletTests: XCTestCase {
 
+    var seed: Data!
+    
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        seed = generateSeed()
     }
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func generateSeed() -> Data {
+        let privateKey = "prosper adapt kiss kid sock blur window guilt green sort treat erupt lunar slot student fall rubber modify try salute toilet hard weapon fire"
+        
+        let words = privateKey.split(separator: " ")
+        
+        let mnemonic = BTCMnemonic(words: words, password: "", wordListType: .english)!
+        
+        return mnemonic.seed
     }
-
+    
     func testETH() {
-        let privateKey = "solution endless depart clog hold rubber work use area enter visual govern"
-        let wallet = EthereumWallet(from: privateKey)
+        
+        let wallet = EthereumWallet(from: seed)
         
         let address = wallet.generateAddress()
         
         XCTAssert(address != nil)
-        
-        
     }
 
     
     func testBTC() {
-        let privateKey = "solution endless depart clog hold rubber work use area enter visual govern"
-        let wallet = BitcoinWallet(from: privateKey)
+        let wallet = BitcoinWallet(from: seed)
         
         let address = wallet.generateAddress()
         
@@ -42,16 +48,25 @@ class flight_walletTests: XCTestCase {
     
     func testSignature() {
         
-        let privateKey = "solution endless depart clog hold rubber work use area enter visual govern"
-        let wallet = BitcoinWallet(from: privateKey)
+        let wallet = BitcoinWallet(from: seed)
         
         let rawtx = """
-01000000012b4fcd2309554dfab9bdfbdd9e558f776f760c377d4b8819ef0b364c35be54ae010000006b4830450221009f7dc9c4243dae374f99db15c075eb6de21a90f60ddafcbcee4c09302141479a0220579ba73c3b6ac75e938426c72546505da5258048a39df73e7e50870902f5a7950121033a117cc4d164984c1e8fb58f39f08a17a2e615d77d8f7a35a7d9cdeb9e93ef4cfeffffff0100e20400000000001976a91436963a21b49f701acf03dd1e778ab5774017b53c88ac00000000
+0100000002814345b8456b6a53c346af926bace8ebdf7cfb02b740d1feb4f4f8a9caf040f00100000000feffffffbc701d0cfe11aa5a984fa213522a1c867641a2798be10812ace5ad63dbd53c3a0100000000feffffff0240420f00000000001976a9142d736ae2babe22e79fe9234cec70572f364f062988ace07f1904000000001976a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac00000000
 """
         
-        let signed = wallet.sign(rawtx)
+        let (tx, _) = wallet.sign(tx: rawtx)!
+
+        let sm = BTCScriptMachine(transaction: tx, inputIndex: 0)!
+        let output = tx.outputs.first as! BTCTransactionOutput
+        let script = output.script.copy() as! BTCScript
         
-        print(signed)
+        do {
+            try sm.verify(withOutputScript: script)
+        } catch {
+            print(error)
+            XCTFail("tx should be signed correctly")
+        }
+        
     }
 
 }
