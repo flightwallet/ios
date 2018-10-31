@@ -86,6 +86,27 @@ extension WalletViewController: UITableViewDataSource, UITableViewDelegate {
         let address = addresses[indexPath.row]
         selectedAddress = address
     }
+    
+    func tableView(_ tableView: UITableView, canPerformAction action:
+        Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        if (action.description == "copy:") {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
+        if (action.description == "copy:") {
+            let address = addresses[indexPath.row]
+            print(address.body!)
+            UIPasteboard.general.string = address.body
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
 }
 
 class AddressTableViewCell: UITableViewCell {
