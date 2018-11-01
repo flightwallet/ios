@@ -261,8 +261,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="23r-lv-ehF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <swipeGestureRecognizer direction="down" id="lWS-CA-WiK">
                     <connections>
-                        <action selector="goToWallet:" destination="Ddg-J0-xFT" id="pwY-ll-Vup"/>
-                        <segue destination="9pv-A4-QxB" kind="show" id="R6K-2v-PkF"/>
+                        <segue destination="9pv-A4-QxB" kind="show" identifier="goToWalletFromScanQRSegue" id="R6K-2v-PkF"/>
                     </connections>
                 </swipeGestureRecognizer>
             </objects>

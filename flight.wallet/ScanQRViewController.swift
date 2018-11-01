@@ -20,6 +20,7 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     
     var parsedTx: String?
     var foundTransaction: Bool = false
+    var isCameraShowing = false
     var wallet: Wallet!
     var address: Address?
     
@@ -28,6 +29,16 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         
         initPreview()
         initQRReader()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("isCameraShowing", isCameraShowing)
+        if !isCameraShowing {
+            showPromptAlert()
+            
+            
+            
+        }
     }
     
     func initPreview() {
@@ -58,7 +69,8 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             
             
             captureSession.startRunning()
-        
+            
+            isCameraShowing = true
             
         } catch {
             print(error)
@@ -105,6 +117,28 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
         }
     }
     
+    func showPromptAlert() {
+        //1. Create the alert controller.
+        let alert = UIAlertController(title: "Raw tx", message: "Paste raw hex of a transaction", preferredStyle: .alert)
+        
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextField { (textField) in
+            textField.text = "paste raw tx..."
+        }
+        
+        // 3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "Parse", style: .default, handler: { [weak alert] (_) in
+            let textField = alert!.textFields![0] // Force unwrapping because we know it exists.
+            let raw_tx = textField.text!
+            print("Text field: \(raw_tx)")
+            
+            self.transactionScanned(encodedTx: raw_tx)
+        }))
+        
+        // 4. Present the alert.
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     func transactionScanned(encodedTx: String) {
         if parsedTx != nil {
             return
@@ -118,10 +152,11 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let txController = segue.destination as? TransactionReceiptViewController {
             txController.parsedTx = parsedTx
-            txController.wallet = wallet
             txController.chain = address?.type
             
-            self.parsedTx = nil
+            print("tx", parsedTx)
+            print("address", address)
+            print("wallet", wallet)
         }
     }
 }

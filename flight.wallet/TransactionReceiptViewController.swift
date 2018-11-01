@@ -19,13 +19,23 @@ class TransactionReceiptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let chain = chain,
-            let tx = parsedTx,
-            let currencyWallet = wallet.wallets[chain] {
+        print("chain", chain)
+        print("tx", parsedTx)
+        
+        wallet = Wallet.instance
+        chain = .Bitcoin
+        
+        if let tx = parsedTx, let currencyWallet = wallet.wallets[chain!] {
+            
+            print("wallet", currencyWallet)
             
             if let transaction = currencyWallet.decode(tx: tx) {
+                print("ptx", transaction)
+                
                 self.transaction = transaction
                 self.signedTx = currencyWallet.sign(tx: transaction)
+                
+                print("signed", self.signedTx)
             }
         }
     }
