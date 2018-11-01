@@ -84,7 +84,15 @@ extension WalletViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let address = addresses[indexPath.row]
-        selectedAddress = address
+        
+        if address.type == .Ethereum {
+            selectedAddress = nil
+            tableView.deselectRow(at: indexPath, animated: true)
+            showAlert(title: "Ethereum Disabled", message: "Sorry, Ethereum wallet does not work yet")
+        } else {
+            selectedAddress = address
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, canPerformAction action:

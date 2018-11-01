@@ -29,6 +29,7 @@
 		2BB9B45E218570E7005370BE /* ethereumjs-tx-1.3.3.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B45C218570E6005370BE /* ethereumjs-tx-1.3.3.js */; };
 		2BB9B45F218570E7005370BE /* ethereumjs-wallet-hd-0.6.0.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B45D218570E6005370BE /* ethereumjs-wallet-hd-0.6.0.js */; };
 		2BB9B46121858050005370BE /* bitcoinjs-lib-4.0.2.js in Resources */ = {isa = PBXBuildFile; fileRef = 2BB9B46021858050005370BE /* bitcoinjs-lib-4.0.2.js */; };
+		2BFA2668218BC9DE006961FD /* UIKit+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFA2667218BC9DE006961FD /* UIKit+Extensions.swift */; };
 		718CF10DAB562914E8DE6D2D /* libPods-flight.walletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 577ACA827D35A907F4686F0C /* libPods-flight.walletTests.a */; };
 		CEC814DA464AA83AD1B2E7DD /* libPods-flight.wallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6D58E26CE835EE442E982C8B /* libPods-flight.wallet.a */; };
 /* End PBXBuildFile section */
@@ -81,6 +82,7 @@
 		2BB9B45C218570E6005370BE /* ethereumjs-tx-1.3.3.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "ethereumjs-tx-1.3.3.js"; sourceTree = "<group>"; };
 		2BB9B45D218570E6005370BE /* ethereumjs-wallet-hd-0.6.0.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "ethereumjs-wallet-hd-0.6.0.js"; sourceTree = "<group>"; };
 		2BB9B46021858050005370BE /* bitcoinjs-lib-4.0.2.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "bitcoinjs-lib-4.0.2.js"; sourceTree = "<group>"; };
+		2BFA2667218BC9DE006961FD /* UIKit+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIKit+Extensions.swift"; sourceTree = "<group>"; };
 		428380C9527C98D070423904 /* Pods-flight.walletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flight.walletTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-flight.walletTests/Pods-flight.walletTests.debug.xcconfig"; sourceTree = "<group>"; };
 		577ACA827D35A907F4686F0C /* libPods-flight.walletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-flight.walletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D58E26CE835EE442E982C8B /* libPods-flight.wallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-flight.wallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +119,7 @@
 		2B5E8B1B2184F5EF00604744 = {
 			isa = PBXGroup;
 			children = (
+				2BFA2667218BC9DE006961FD /* UIKit+Extensions.swift */,
 				2B5E8B262184F5EF00604744 /* flight.wallet */,
 				2B5E8B3D2184F5F100604744 /* flight.walletTests */,
 				2B5E8B482184F5F100604744 /* flight.walletUITests */,
@@ -382,6 +385,7 @@
 			files = (
 				2B5E8B622185214E00604744 /* TransactionReceiptViewController.swift in Sources */,
 				2B5E8B582184F88E00604744 /* Wallet.swift in Sources */,
+				2BFA2668218BC9DE006961FD /* UIKit+Extensions.swift in Sources */,
 				2B5E8B2C2184F5EF00604744 /* ScanQRViewController.swift in Sources */,
 				2B5E8B282184F5EF00604744 /* AppDelegate.swift in Sources */,
 				2B5E8B6421852FAC00604744 /* ShowQRViewController.swift in Sources */,
