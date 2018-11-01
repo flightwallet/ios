@@ -59,4 +59,8 @@ class ShowQRViewController: UIViewController {
             performSegue(withIdentifier: "scanTransactionSegue", sender: nil)
         }
     }
+    
+    @IBAction func copyRawSignedTx(_ sender: Any) {
+        UIPasteboard.general.string = data
+    }
 }

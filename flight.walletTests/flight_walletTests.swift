@@ -60,6 +60,11 @@ class flight_walletTests: XCTestCase {
         let output = tx.outputs.first as! BTCTransactionOutput
         let script = output.script.copy() as! BTCScript
         
+        
+        print("from", tx.from)
+        print("to", tx.to)
+        print("amount", tx.amount)
+        
         do {
             try sm.verify(withOutputScript: script)
         } catch {

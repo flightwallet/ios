@@ -10,6 +10,15 @@ import Foundation
 import CoreBitcoin
 
 struct BitcoinTransaction: Transaction {
+    var fee: Double?
+    
+    var change: Double?
+    
+    var from: String?
+    
+    var to: String?
+    
+    var amount: Double?
     
     var type: Chain = .Bitcoin
     
@@ -28,6 +37,80 @@ struct BitcoinTransaction: Transaction {
 }
 
 extension BTCTransaction: Transaction {
+    var from: String? {
+        guard let tx_inputs = inputs as? [BTCTransactionInput] else {
+            return nil
+        }
+        
+        return tx_inputs.map { input in
+            print("\tinput: ")
+            if let tx_id = input.previousTransactionID {
+                return "\(tx_id):\(input.previousIndex)"
+            } else {
+                return "-"
+            }
+        }.joined(separator: ", ")
+    }
+    
+    var to: String? {
+        guard let tx_outputs = outputs as? [BTCTransactionOutput] else {
+            return nil
+        }
+        
+        return tx_outputs.map { output in
+            print(output)
+            guard let script = output.script else { return "-" }
+            
+            print(script.string)
+            
+            if script.isPayToPublicKeyHashScript {
+                
+                let address = script.standardAddress
+                
+                print(address)
+                
+                let addressTestnet = BTCPublicKeyAddressTestnet(data: address?.data)
+                print(addressTestnet)
+                
+                return addressTestnet?.string ?? "-"
+            } else {
+                let address = script.scriptHashAddressTestnet
+                
+                print(address)
+                
+                return address?.string ?? "-"
+            }
+        }.joined(separator: ", ")
+    }
+    
+    var amount: Double? {
+        guard let tx_outputs = outputs as? [BTCTransactionOutput] else {
+            return nil
+        }
+        
+        let values = tx_outputs.map { output -> Double in
+            return Double(output.value) / Double(BTCCoin)
+        }
+        
+        return values.first
+    }
+    
+    var change: Double? {
+        guard let tx_outputs = outputs as? [BTCTransactionOutput] else {
+            return nil
+        }
+        
+        let values = tx_outputs.map { output -> Double in
+            return Double(output.value) / Double(BTCCoin)
+        }
+        
+        return values.reduce(0, +) - (values.first ?? 0)
+    }
+    
+    var fee: Double? {
+        return 0
+    }
+    
     func encode() -> String {
         return hex
     }
@@ -141,6 +224,7 @@ class BitcoinWallet: CryptoWallet {
             
             let script = BTCScript(address: key.addressTestnet)
             
+            script?.scriptHashAddressTestnet
             print("\n")
             print("script pub key", script!.string!)
             

@@ -15,12 +15,20 @@ class TransactionReceiptViewController: UIViewController {
     var wallet: Wallet!
     var chain: Chain?
     var signedTx: SignedTransaction?
+    var detailedView: TransactionDetailedViewController!
+    
+    var isSigned = false {
+        didSet {
+            
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         print("chain", chain)
         print("tx", parsedTx)
+        
         
         wallet = Wallet.instance
         chain = .Bitcoin
@@ -36,6 +44,10 @@ class TransactionReceiptViewController: UIViewController {
                 self.signedTx = currencyWallet.sign(tx: transaction)
                 
                 print("signed", self.signedTx)
+                self.isSigned = true
+                
+                self.detailedView.transaction = signedTx ?? transaction
+                self.detailedView.updateLabels()
             }
         }
     }
@@ -51,9 +63,9 @@ class TransactionReceiptViewController: UIViewController {
             }
         }
         
-        if let txReceiptView = segue.destination as? TransactionDetailedViewController,
-            let transaction = transaction {
-            txReceiptView.transaction = transaction
+        if let txReceiptView = segue.destination as? TransactionDetailedViewController {
+            self.detailedView = txReceiptView
+            self.detailedView.transaction = signedTx ?? transaction
         }
     }
 }

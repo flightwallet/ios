@@ -33,6 +33,12 @@ protocol Transaction {
     var body: String { get }
     var type: Chain { get }
     
+    var from: String? { get }
+    var to: String? { get }
+    var amount: Double? { get }
+    var fee: Double? { get }
+    var change: Double? { get }
+    
     func encode() -> String
 }
 
@@ -47,7 +53,7 @@ protocol DecodedTransaction {
     var extra: String? { get }
 }
 
-protocol SignedTransaction {
+protocol SignedTransaction: Transaction {
     var network: Network { get }
     var type: Chain { get }
     var body: String { get }
