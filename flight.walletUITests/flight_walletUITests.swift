@@ -27,7 +27,17 @@ class flight_walletUITests: XCTestCase {
     }
 
     func testExample() {
-        XCUIApplication().toolbars["Toolbar"].buttons["PAY"].tap()
+       
+        
+        let app = XCUIApplication()
+        let toolbar = app.toolbars["Toolbar"]
+        let selectAccountButton = toolbar.buttons["SELECT ACCOUNT"]
+        selectAccountButton.tap()
+        selectAccountButton.swipeUp()
+        toolbar.buttons["PAY"].tap()
+        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 1).children(matching: .other).element.children(matching: .other).element.tap()
+        toolbar.buttons["PROCEED"].tap()
+        
         
         XCTAssertTrue(true, "should not fail")
     }

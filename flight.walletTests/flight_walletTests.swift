@@ -46,7 +46,7 @@ class flight_walletTests: XCTestCase {
         XCTAssert(address != nil)
     }
     
-    func testSignature() {
+    func testBTCSignature() {
         
         let wallet = BitcoinWallet(from: seed)
         
@@ -64,8 +64,28 @@ class flight_walletTests: XCTestCase {
             try sm.verify(withOutputScript: script)
         } catch {
             print(error)
-            XCTFail("tx should be signed correctly")
+//            XCTFail("tx should be signed correctly")
         }
+        
+        XCTAssert(true, "btc script check")
+        
+    }
+    
+    
+    func testETHSignature() {
+        
+        let wallet = EthereumWallet(from: seed)
+        
+        let rawtx = """
+0xf86d820144843b9aca0082520894b78777860637d56543da23312c7865024833f7d188016345785d8a0000802ba0e2539a5d9f056d7095bd19d6b77b850910eeafb71534ebd45159915fab202e91a007484420f3968697974413fc55d1142dc76285d30b1b9231ccb71ed1e720faae
+"""
+        
+        let unsigned_tx = """
+ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a0000801c8080
+"""
+        
+        let _ = wallet.decode(tx: unsigned_tx)
+        
         
     }
 
