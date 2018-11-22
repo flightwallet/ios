@@ -13,7 +13,7 @@
         <!--Wallet-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
-                <viewController id="9pv-A4-QxB" userLabel="Wallet" customClass="WalletViewController" customModule="flight_wallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="WalletMainPageVC" useStoryboardIdentifierAsRestorationIdentifier="YES" id="9pv-A4-QxB" userLabel="Wallet" customClass="WalletViewController" customModule="flight_wallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="tsR-hK-woN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -340,7 +340,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ydz-Rc-j4P" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <swipeGestureRecognizer direction="down" id="cMZ-ee-fLQ"/>
+                <swipeGestureRecognizer cancelsTouchesInView="NO" direction="right" id="cMZ-ee-fLQ">
+                    <connections>
+                        <action selector="goBack:" destination="nbh-eY-s7W" id="Abp-f7-1jj"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1026" y="-877"/>
         </scene>
@@ -428,7 +432,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2799" y="-1131"/>
+            <point key="canvasLocation" x="3658" y="-1133"/>
         </scene>
         <!--Transaction Receipt View Controller-->
         <scene sceneID="oo8-Jh-X9p">

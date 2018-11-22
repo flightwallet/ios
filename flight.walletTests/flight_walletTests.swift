@@ -61,8 +61,8 @@ class flight_walletTests: XCTestCase {
         let script = output.script.copy() as! BTCScript
         
         
-        print("from", tx.from)
-        print("to", tx.to)
+        print("from", tx.sender)
+        print("to", tx.destination)
         print("amount", tx.amount)
         
         do {
@@ -89,8 +89,15 @@ class flight_walletTests: XCTestCase {
 ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a0000801c8080
 """
         
-        let _ = wallet.decode(tx: unsigned_tx)
+        let signed = wallet.decode(tx: unsigned_tx)
         
+//        print(tx)
+        
+//        let signed = wallet.sign(tx: <#T##Transaction#>)
+        
+        print(signed!.body)
+        
+        XCTAssert(signed != nil)
         
     }
     
@@ -104,6 +111,34 @@ ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a
         
         XCTAssertEqual(tx?.tx_outputs?[0].address?.body, "2MwcA84sytaBBWwv44LubfHFGaWSunZk2tH", "btc script check")
         XCTAssertEqual(tx?.tx_outputs?[1].address?.body, "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM", "btc script check")
+        
+    }
+    
+    
+    func testETHParseTX() {
+        
+        let wallet = EthereumWallet(from: seed)
+        
+        let unsigned_tx = """
+ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a0000801c8080
+"""
+        
+        let tx = wallet.decode(tx: unsigned_tx)
+        
+        print("sender", tx?.sender)
+        
+        print("dest", tx?.destination)
+        
+        print(tx?.tx_inputs)
+        
+        print(tx?.tx_outputs)
+        
+        XCTAssertNotNil(tx, "tx exists")
+        
+        XCTAssertEqual(tx?.body, "0xf86d8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a0000801ca0ce2b15b79354ea235ca445365b6e01f2cb8cb95bffb8036fb18f8239bed09c9da06c0c217a7ecf1531a5cd5db243b5aa750b4bf573d6a5e1ab4228ec6cf1b3ff45", "tx signed correctly")
+        
+        XCTAssertEqual(tx?.tx_inputs?[0].address?.body, "0x9F6F4a757Cbcc2AcA6e8b5A8ff667ab2Ada2420B", "eth input check")
+        XCTAssertEqual(tx?.tx_outputs?[0].address?.body, "0xf8558382014485843b9aCa008382520880A0a0a0", "eth output check")
         
     }
 

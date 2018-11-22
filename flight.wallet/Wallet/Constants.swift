@@ -64,8 +64,8 @@ protocol Transaction {
     var body: String { get }
     var type: Chain { get }
     
-    var from: String? { get }
-    var to: String? { get }
+    var sender: String? { get }
+    var destination: String? { get }
     
     var total: Double? { get }
     var fee: Double? { get }

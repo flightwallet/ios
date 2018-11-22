@@ -63,6 +63,14 @@ class ShowQRViewController: UIViewController {
         }
     }
     
+    @IBAction func goBack(_ sender: Any) {
+        
+        if type == .Address {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "WalletMainPageVC") as! WalletViewController
+            self.present(vc, animated: true, completion: nil)
+        }
+    }
+    
     @IBAction func copyRawSignedTx(_ sender: Any) {
         UIPasteboard.general.string = data
     }

@@ -139,11 +139,11 @@ extension BTCTransaction: Transaction {
         return tx_outputs
     }
     
-    var from: String? {
+    var sender: String? {
         return tx_inputs?.map { i in i.text ?? "-" }.joined(separator: ", ")
     }
     
-    var to: String? {
+    var destination: String? {
         return tx_outputs?.map { o in o.address?.body ?? "-" }.joined(separator: ", ")
     }
     

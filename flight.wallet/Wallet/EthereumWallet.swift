@@ -10,6 +10,264 @@ import Foundation
 import Web3
 import CoreBitcoin
 
+struct EthereumTransactionInput: TransactionInput {
+    var address: AbstractAddress?
+    
+    var amount: Double? = nil
+    
+    var text: String? {
+        return address?.body
+    }
+}
+
+struct EthereumTransactionOutput: TransactionOutput {
+    var address: AbstractAddress?
+    
+    var amount: Double?
+    
+    
+}
+
+extension EthereumAddress: AbstractAddress {
+    var isMainnet: Bool {
+        return false
+    }
+    
+    var type: Chain {
+        return .Ethereum
+    }
+    
+    var body: String? {
+        return hex(eip55: true)
+    }
+}
+
+extension EthereumTransaction: Transaction {
+    var network: Network {
+        return .Testnet
+    }
+    
+    var body: String {
+        
+        return ""
+
+//        guard let nonce = nonce, let gasPrice = gasPrice, let gasLimit = gas, let value = value else { fatalError("Cant decode tx") }
+//
+//        let chainId = network == .Mainnet ? 1 : 0 // Testnet
+//
+//        let rlp = RLPItem(
+//            nonce: nonce,
+//            gasPrice: gasPrice,
+//            gasLimit: gasLimit,
+//            to: to,
+//            value: value,
+//            data: data,
+//            v: EthereumQuantity(integerLiteral: UInt64(chainId)),
+//            r: 0,
+//            s: 0
+//        )
+//
+//        let rawRlp = try RLPEncoder().encode(rlp)
+//
+//        return rawRlp.ethereumValue().ethereumData?.hex() ?? ""
+    }
+    
+    var type: Chain {
+        return .Ethereum
+    }
+    
+    var sender: String? {
+        // recover signature
+        return from?.body
+    }
+    
+    var destination: String? {
+        return to?.body
+    }
+    
+    var total: Double? {
+        return Double(value?.quantity ?? 0) / Double(1e18)
+    }
+    
+    var fee: Double? {
+        return 0
+    }
+    
+    var tx_inputs: [TransactionInput]? {
+        return [
+            EthereumTransactionInput(address: from, amount: nil)
+        ]
+    }
+    
+    var tx_outputs: [TransactionOutput]? {
+        return [
+            EthereumTransactionOutput(address: to, amount: total)
+        ]
+    }
+    
+    func estimateChange(ownerAddress: AbstractAddress) -> Double {
+        return 0
+    }
+    
+    func estimateAmount(ownerAddress: AbstractAddress) -> Double {
+        return total ?? 0
+    }
+    
+    func encode() -> String {
+        return body
+    }
+    
+    func decode(rawhex: String) -> Transaction {
+        fatalError("Transaction needs to know 'from' field: this doesnt work, use wallet.decode() instead")
+        
+        let raw_tx = Bytes(hex: rawhex)
+        
+        let rlp = try! RLPDecoder().decode(raw_tx).array!
+        
+        print("rlp", rlp)
+        
+        let edata = EthereumData(bytes: raw_tx)
+        
+        print("data", edata)
+        
+        let owner_addr_hex = "000fff000ADD2ECC" //generateAddress(index: 1)!.body!
+        
+        print("sender", owner_addr_hex)
+        
+        let nonce = EthereumQuantity(quantity: rlp[0].bigUInt!)
+        let gasPrice = EthereumQuantity(quantity: rlp[1].bigUInt!)
+        let gas = EthereumQuantity(quantity: rlp[2].bigUInt!)
+        let from = try? EthereumAddress.init(hex: owner_addr_hex, eip55: true)
+        // try? EthereumAddress(rawAddress: rlp[3].bytes!)
+        let to = try? EthereumAddress(rawAddress: rlp[3].bytes!)
+        let value = EthereumQuantity(quantity: rlp[4].bigUInt!)
+        let data = EthereumData(bytes: rlp[5].bytes!)
+        
+        return EthereumTransaction(
+            nonce: nonce, gasPrice: gasPrice, gas: gas,
+            from: from, to: to, value: value, data: data
+        )
+    }
+    
+    
+}
+
+extension EthereumSignedTransaction: SignedTransaction {
+    var unsigned: Transaction {
+        return self
+    }
+    
+    var signatures: [String] {
+        return []
+    }
+}
+
+extension EthereumSignedTransaction: Transaction {
+    var network: Network {
+        return chainId == 1
+            ? .Mainnet
+            : .Testnet
+    }
+    
+    var body: String {
+        return rlp().ethereumValue().string ?? ""
+    }
+    
+    var type: Chain {
+        return .Ethereum
+    }
+    
+    var from: EthereumAddress? {
+        guard verifySignature() else { return nil }
+        
+        let recId: BigUInt
+        if v.quantity >= BigUInt(35) + (BigUInt(2) * chainId.quantity) {
+            recId = v.quantity - BigUInt(35) - (BigUInt(2) * chainId.quantity)
+        } else {
+            if v.quantity >= 27 {
+                recId = v.quantity - 27
+            } else {
+                recId = v.quantity
+            }
+        }
+        
+        let senderPublicKey = try? EthereumPublicKey(message: RLPEncoder().encode(rlp()), v: EthereumQuantity(quantity: recId), r: r, s: s)
+        
+        return senderPublicKey?.address
+    }
+    
+    var sender: String? {
+        return from?.hex(eip55: true)
+    }
+    
+    var destination: String? {
+        return to?.hex(eip55: true)
+    }
+    
+    var total: Double? {
+        return Double(value.quantity) / Double(1e18)
+    }
+    
+    var fee: Double? {
+        return 0
+    }
+    
+    var tx_inputs: [TransactionInput]? {
+        return [
+            EthereumTransactionInput(address: from, amount: nil)
+        ]
+    }
+    
+    var tx_outputs: [TransactionOutput]? {
+        return [
+            EthereumTransactionOutput(address: to, amount: total)
+        ]
+    }
+    
+    func estimateChange(ownerAddress: AbstractAddress) -> Double {
+        return 0
+    }
+    
+    func estimateAmount(ownerAddress: AbstractAddress) -> Double {
+        return total ?? 0
+    }
+    
+    func encode() -> String {
+        return body
+    }
+    
+    func decode(rawhex: String) -> Transaction {
+        fatalError("EthereumSignedTransaction: can't create signed tx from hex")
+        
+//        let raw_tx = Bytes(hex: rawhex)
+//
+//        let rlp = try! RLPDecoder().decode(raw_tx).array!
+//
+//        print("rlp", rlp)
+//
+//        let edata = EthereumData(bytes: raw_tx)
+//
+//        print("data", edata)
+//        let chainId = EthereumQuantity(integerLiteral: 0)
+//
+//        let nonce = EthereumQuantity(quantity: rlp[0].bigUInt!)
+//        let gasPrice = EthereumQuantity(quantity: rlp[1].bigUInt!)
+//        let gas = EthereumQuantity(quantity: rlp[2].bigUInt!)
+//        // try? EthereumAddress(rawAddress: rlp[3].bytes!)
+//        let to = try? EthereumAddress(rawAddress: rlp[3].bytes!)
+//        let value = EthereumQuantity(quantity: rlp[4].bigUInt!)
+//        let data = EthereumData(bytes: rlp[5].bytes!)
+//
+//        return EthereumSignedTransaction(
+//            nonce: nonce, gasPrice: gasPrice, gasLimit: gas,
+//            to: to, value: value, data: data,
+//            v: 0, r: 0, s: 0,
+//            chainId: chainId)
+    }
+    
+    
+}
+
 class EthereumWallet: CryptoWallet {
     
     var type: Chain = .Ethereum
@@ -128,14 +386,14 @@ class EthereumWallet: CryptoWallet {
         
         let signed = try? tx.sign(with: ethKey, chainId: 0)
         
-        print(signed)
+        print("tx", signed)
         
-        print(signed?.verifySignature())
+        print("tx signature", signed?.verifySignature())
         
-        print(signed?.rlp().ethereumValue().ethereumData?.hex())
+        print("tx raw hex", signed?.rlp().ethereumValue().ethereumData?.hex())
         
         
-        return nil
+        return signed
     }
     
     func sign(tx: Transaction) -> SignedTransaction? {

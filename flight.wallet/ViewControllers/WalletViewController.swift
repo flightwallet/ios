@@ -87,14 +87,15 @@ extension WalletViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let address = addresses[indexPath.row]
         
-        if address.type == .Ethereum {
+//        if address.type == .Ethereum {
+//            selectedAddress = nil
+//            tableView.deselectRow(at: indexPath, animated: true)
+//            showAlert(title: "Ethereum is Disabled", message: "Please invest to unlock Ethereum wallet")
+//        } else
+        if address.isMainnet {
             selectedAddress = nil
             tableView.deselectRow(at: indexPath, animated: true)
-            showAlert(title: "Ethereum is Disabled", message: "Sorry, Ethereum wallet does not work yet")
-        } else if address.isMainnet {
-            selectedAddress = nil
-            tableView.deselectRow(at: indexPath, animated: true)
-            showAlert(title: "Mainnet is Disabled", message: "Sorry, Mainnet addresses do not work yet")
+            showAlert(title: "Mainnet is Disabled", message: "Please invest to unlock!")
         } else {
             selectedAddress = address
         }
