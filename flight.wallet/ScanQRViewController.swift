@@ -22,7 +22,7 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     var foundTransaction: Bool = false
     var isCameraShowing = false
     var wallet: Wallet!
-    var address: Address?
+    var address: Address!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,9 +150,11 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let txController = segue.destination as? TransactionReceiptViewController {
-            txController.parsedTx = parsedTx
-            txController.chain = address?.type
+        if let vc = segue.destination as? TransactionReceiptViewController {
+            vc.parsedTx = parsedTx
+            vc.chain = address?.type
+            vc.address = address
+            vc.wallet = wallet
             
             print("tx", parsedTx)
             print("address", address)

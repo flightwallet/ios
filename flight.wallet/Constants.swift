@@ -19,13 +19,44 @@ enum Chain {
     case Other
 }
 
-struct Address {
+protocol AbstractAddress {
+    var isMainnet: Bool { get }
+    var type: Chain { get }
+    var body: String? { get }
+}
+
+struct Address: AbstractAddress {
+    var isMainnet: Bool {
+        return network == .Mainnet
+    }
+    
     let network: Network
     let type: Chain
     let path: String
     let friendlyName: String
     
     let body: String?
+}
+
+func ==(left: AbstractAddress, right: AbstractAddress) -> Bool {
+    return left.isMainnet == right.isMainnet
+        && left.type == right.type
+        && left.body == right.body
+}
+
+func !=(left: AbstractAddress, right: AbstractAddress) -> Bool {
+    return !(left == right)
+}
+
+protocol TransactionOutput {
+    var address: AbstractAddress? { get }
+    var amount: Double? { get }
+}
+
+protocol TransactionInput {
+    var address: AbstractAddress? { get }
+    var amount: Double? { get }
+    var text: String? { get }
 }
 
 protocol Transaction {
@@ -35,11 +66,18 @@ protocol Transaction {
     
     var from: String? { get }
     var to: String? { get }
-    var amount: Double? { get }
+    
+    var total: Double? { get }
     var fee: Double? { get }
-    var change: Double? { get }
+    
+    var tx_inputs: [TransactionInput]? { get }
+    var tx_outputs: [TransactionOutput]? { get }
+    
+    func estimateChange(ownerAddress: AbstractAddress) -> Double
+    func estimateAmount(ownerAddress: AbstractAddress) -> Double
     
     func encode() -> String
+    func decode(rawhex: String) -> Transaction
 }
 
 protocol DecodedTransaction {

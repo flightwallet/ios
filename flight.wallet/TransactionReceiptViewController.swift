@@ -13,6 +13,7 @@ class TransactionReceiptViewController: UIViewController {
     var parsedTx: String?
     var transaction: Transaction?
     var wallet: Wallet!
+    var address: Address!
     var chain: Chain?
     var signedTx: SignedTransaction?
     var detailedView: TransactionDetailedViewController!
@@ -66,6 +67,8 @@ class TransactionReceiptViewController: UIViewController {
         if let txReceiptView = segue.destination as? TransactionDetailedViewController {
             self.detailedView = txReceiptView
             self.detailedView.transaction = signedTx ?? transaction
+            self.detailedView.wallet = wallet
+            self.detailedView.address = address
         }
     }
 }

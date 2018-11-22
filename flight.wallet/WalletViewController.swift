@@ -45,6 +45,8 @@ class WalletViewController: UIViewController {
         if let vc = segue.destination as? ShowQRViewController {
             if segue.identifier == "showAddressSegue" {
                 vc.data = selectedAddress?.body
+                vc.address = selectedAddress
+                vc.wallet = wallet
             } else {
                 
             }
@@ -88,7 +90,11 @@ extension WalletViewController: UITableViewDataSource, UITableViewDelegate {
         if address.type == .Ethereum {
             selectedAddress = nil
             tableView.deselectRow(at: indexPath, animated: true)
-            showAlert(title: "Ethereum Disabled", message: "Sorry, Ethereum wallet does not work yet")
+            showAlert(title: "Ethereum is Disabled", message: "Sorry, Ethereum wallet does not work yet")
+        } else if address.isMainnet {
+            selectedAddress = nil
+            tableView.deselectRow(at: indexPath, animated: true)
+            showAlert(title: "Mainnet is Disabled", message: "Sorry, Mainnet addresses do not work yet")
         } else {
             selectedAddress = address
         }

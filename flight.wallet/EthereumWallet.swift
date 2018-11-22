@@ -38,7 +38,7 @@ class EthereumWallet: CryptoWallet {
             network: .Testnet,
             type: .Ethereum,
             path: path,
-            friendlyName: "Ether Account",
+            friendlyName: "Ethereum Testnet",
             body: addressString
         )
         
@@ -48,8 +48,6 @@ class EthereumWallet: CryptoWallet {
     func loaded(completion: @escaping (Address?) -> ()) {
         let _addrs = [
             generateAddress(index: 1),
-            generateAddress(index: 2),
-            generateAddress(index: 3),
         ]
         
         let addrs = _addrs.compactMap({ addr in addr })
@@ -76,6 +74,8 @@ class EthereumWallet: CryptoWallet {
             value: 1,
             data: tx_data
         )
+        
+        print(tx)
         
         return nil
     }

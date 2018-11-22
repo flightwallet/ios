@@ -9,102 +9,154 @@
 import Foundation
 import CoreBitcoin
 
-struct BitcoinTransaction: Transaction {
-    var fee: Double?
-    
-    var change: Double?
-    
-    var from: String?
-    
-    var to: String?
-    
-    var amount: Double?
-    
-    var type: Chain = .Bitcoin
-    
-    let network: Network
-    
-    let body: String
-    
-    init?(from tx: String) {
-        network = .Testnet
-        body = tx //"rawtx..."
+extension BTCAddress: AbstractAddress {
+    var isMainnet: Bool {
+        return network == BTCNetwork.mainnet()
     }
     
-    func encode() -> String {
-        return ""
+    var type: Chain {
+        return .Bitcoin
+    }
+    
+    var body: String? {
+        return string
     }
 }
 
+extension BTCTransactionInput: TransactionInput {
+    var address: AbstractAddress? {
+        return transactionOutput?.address
+    }
+    
+    var amount: Double? {
+        return transactionOutput?.amount
+    }
+    
+    var text: String? {
+        if let tx_id = previousTransactionID {
+            return "\(tx_id):\(previousIndex)"
+        } else {
+            return nil
+        }
+    }
+}
+
+extension BTCTransactionOutput: TransactionOutput {
+    var address: AbstractAddress? {
+        guard let script = script else { return nil }
+        
+        print(script.string)
+        
+        
+        if script.isPayToPublicKeyHashScript {
+            let address = script.standardAddress
+            print(address)
+            
+            let addressTestnet = BTCPublicKeyAddressTestnet(data: address?.data)
+            print(addressTestnet)
+            
+            return addressTestnet
+        } else if script.isPayToScriptHashScript {
+            let address = script.standardAddress
+            print(address)
+            
+            let addressTestnet = BTCScriptHashAddressTestnet(data: address?.data)
+            print(addressTestnet)
+            
+            return addressTestnet
+//
+//            print(address)
+//            print(script.scriptHashAddress)
+//            print(script.standardAddress)
+//
+//
+//            return address
+        } else {
+            let address = script.standardAddress
+            
+            return address
+        }
+    }
+    
+    var amount: Double? {
+        return Double(value) / Double(BTCCoin)
+    }
+    
+}
+
 extension BTCTransaction: Transaction {
-    var from: String? {
+    func estimateAmount(ownerAddress: AbstractAddress) -> Double {
+        guard let tx_outputs = tx_outputs else { return 0 }
+        
+        let myOutputs = tx_outputs
+            .filter { output in output.address != nil && output.address! != ownerAddress }
+        
+        return myOutputs.reduce(0, { sum, output in sum + (output.amount ?? 0) })
+        
+        let change = estimateChange(ownerAddress: ownerAddress)
+        
+        guard let total = total else { fatalError("Transaction without amount") }
+        
+        let amount = total - change
+        
+        guard amount >= 0 else { fatalError("Transaction passing negative value, calculation error") }
+        
+        return amount
+    }
+    
+    func estimateChange(ownerAddress: AbstractAddress) -> Double {
+        guard let tx_outputs = tx_outputs else { return 0 }
+        
+        let myOutputs = tx_outputs
+            .filter { output in output.address != nil && output.address! == ownerAddress }
+        
+        return myOutputs.reduce(0, { sum, output in sum + (output.amount ?? 0) })
+    }
+    
+    func decode(rawhex: String) -> Transaction {
+        return BTCTransaction(hex: rawhex)
+    }
+    
+    convenience init?(from rawhex: String) {
+        self.init(hex: rawhex)
+    }
+    
+    var tx_inputs: [TransactionInput]? {
+        
         guard let tx_inputs = inputs as? [BTCTransactionInput] else {
             return nil
         }
         
-        return tx_inputs.map { input in
-            print("\tinput: ")
-            if let tx_id = input.previousTransactionID {
-                return "\(tx_id):\(input.previousIndex)"
-            } else {
-                return "-"
-            }
-        }.joined(separator: ", ")
+        return tx_inputs
+        
+    }
+    
+    var tx_outputs: [TransactionOutput]? {
+        guard let tx_outputs = outputs as? [BTCTransactionOutput] else {
+            return nil
+        }
+        
+        return tx_outputs
+    }
+    
+    var from: String? {
+        return tx_inputs?.map { i in i.text ?? "-" }.joined(separator: ", ")
     }
     
     var to: String? {
-        guard let tx_outputs = outputs as? [BTCTransactionOutput] else {
-            return nil
-        }
-        
-        return tx_outputs.map { output in
-            print(output)
-            guard let script = output.script else { return "-" }
-            
-            print(script.string)
-            
-            if script.isPayToPublicKeyHashScript {
-                
-                let address = script.standardAddress
-                
-                print(address)
-                
-                let addressTestnet = BTCPublicKeyAddressTestnet(data: address?.data)
-                print(addressTestnet)
-                
-                return addressTestnet?.string ?? "-"
-            } else {
-                let address = script.scriptHashAddressTestnet
-                
-                print(address)
-                
-                return address?.string ?? "-"
-            }
-        }.joined(separator: ", ")
+        return tx_outputs?.map { o in o.address?.body ?? "-" }.joined(separator: ", ")
     }
     
     var amount: Double? {
-        guard let tx_outputs = outputs as? [BTCTransactionOutput] else {
+        guard let tx_outputs = tx_outputs else {
             return nil
         }
         
-        let values = tx_outputs.map { output -> Double in
-            return Double(output.value) / Double(BTCCoin)
-        }
-        
-        return values.first
+        return tx_outputs.first?.amount
     }
     
-    var change: Double? {
-        guard let tx_outputs = outputs as? [BTCTransactionOutput] else {
-            return nil
-        }
-        
-        let values = tx_outputs.map { output -> Double in
-            return Double(output.value) / Double(BTCCoin)
-        }
-        
-        return values.reduce(0, +) - (values.first ?? 0)
+    var total: Double? {
+        return Double(outputsAmount) / Double(BTCCoin)
     }
     
     var fee: Double? {
@@ -154,18 +206,24 @@ class BitcoinWallet: CryptoWallet {
         keychain = BTCKeychain(seed: seed, network: .testnet())!
     }
     
-    func generateAddress(index: Int = 1) -> Address? {
+    func generateAddress(index: Int = 1, isMainnet: Bool = false) -> Address? {
         let path = "m/44'/0'/0/0/\(index)"
         
-        guard let btcAddress = keychain.key(withPath: path)?.addressTestnet else { return nil }
+        guard let btcMainnetAddress = keychain.key(withPath: path)?.address else { return nil }
+        
+        guard let btcTestnetAddress = keychain.key(withPath: path)?.addressTestnet else { return nil }
             
-        let addressString = btcAddress.string
+        let addressString = isMainnet
+            ? btcMainnetAddress.string
+            : btcTestnetAddress.string
+        
+        let network: Network = isMainnet ? .Mainnet : .Testnet
         
         let address = Address(
-            network: .Testnet,
+            network: network,
             type: .Bitcoin,
             path: path,
-            friendlyName: "Bitcoin Account",
+            friendlyName: "Bitcoin \(isMainnet ? "Mainnet" : "Testnet")",
             body: addressString
         )
         
@@ -176,8 +234,7 @@ class BitcoinWallet: CryptoWallet {
     func loaded(completion: @escaping (Address?) -> ()) {
         let _addrs = [
             generateAddress(index: 1),
-            generateAddress(index: 2),
-            generateAddress(index: 3),
+            generateAddress(index: 1, isMainnet: true),
         ]
         
         let addrs = _addrs.compactMap({ addr in addr })
@@ -271,7 +328,7 @@ class BitcoinWallet: CryptoWallet {
     }
     
     func decode(tx: String) -> Transaction? {
-        return BitcoinTransaction(from: tx)
+        return BTCTransaction(from: tx)
     }
 }
 

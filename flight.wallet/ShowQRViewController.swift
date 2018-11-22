@@ -15,6 +15,9 @@ enum QRType {
 }
 
 class ShowQRViewController: UIViewController {
+    var wallet: Wallet!
+    var address: Address!
+    
     var data: String?
     var type: QRType!
     
@@ -62,5 +65,12 @@ class ShowQRViewController: UIViewController {
     
     @IBAction func copyRawSignedTx(_ sender: Any) {
         UIPasteboard.general.string = data
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let vc = segue.destination as? ScanQRViewController {
+            vc.wallet = wallet
+            vc.address = address
+        }
     }
 }
