@@ -368,6 +368,15 @@ class EthereumWallet: CryptoWallet {
             from: from, to: to, value: value, data: data
         )
         
+        return tx
+        
+    }
+    
+    func sign(tx: Transaction) -> SignedTransaction? {
+        guard let tx = tx as? EthereumTransaction else {
+            fatalError("Can't sign non-ethereum transaction in Ethereum wallet")
+        }
+        
         print(tx)
         
         let path = "m/44'/60'/0/0/\(1)"
@@ -384,7 +393,7 @@ class EthereumWallet: CryptoWallet {
         }
         
         
-        let signed = try? tx.sign(with: ethKey, chainId: 0)
+        let signed = try? tx.sign(with: ethKey, chainId: 4)
         
         print("tx", signed)
         
@@ -394,10 +403,6 @@ class EthereumWallet: CryptoWallet {
         
         
         return signed
-    }
-    
-    func sign(tx: Transaction) -> SignedTransaction? {
-        return nil
     }
     
     func sign(tx: Transaction, address: Address) -> SignedTransaction? {

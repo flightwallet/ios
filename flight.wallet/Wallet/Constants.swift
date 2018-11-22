@@ -17,6 +17,14 @@ enum Chain {
     case Bitcoin
     case Ethereum
     case Other
+    
+    var curr_name: String {
+        switch self {
+        case .Bitcoin:  return "BTC"
+        case .Ethereum: return "ETH"
+        default:        return "crypto"
+        }
+    }
 }
 
 protocol AbstractAddress {

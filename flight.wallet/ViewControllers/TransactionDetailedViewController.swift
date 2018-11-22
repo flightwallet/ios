@@ -137,16 +137,17 @@ class TransactionDetailedViewController: UITableViewController {
             let change = transaction?.estimateChange(ownerAddress: address) ?? 0
             let amount = transaction?.estimateAmount(ownerAddress: address) ?? 0
             
+            let curr_name = address.type.curr_name
             
             if (indexPath.row == 0) {
             
-                let text = "Sending: " + String(amount) + " BTC"
+                let text = "Sending: " + String(amount) + " \(curr_name)"
                 
                 cell.setData(amount: text)
                 
             } else {
                 
-                let text = "Change: " + String(change) + " BTC"
+                let text = "Change: " + String(change) + " \(curr_name)"
                 
                 cell.setData(amount: text)
                 
@@ -231,15 +232,9 @@ class TransactionOutputTableViewCell: UITableViewCell {
         
         addressLabel.text = address.body
         
-        switch (address.type) {
-        case .Bitcoin:
-            amountLabel.text = String(amount) + " BTC"
-        case .Ethereum:
-            amountLabel.text = String(amount) + " ETH"
-        default:
-            amountLabel.text = String(amount) + " crypto"
-        }
+        let curr_name = address.type.curr_name
         
+        amountLabel.text = "\(String(amount)) \(curr_name)"
     }
     
 }

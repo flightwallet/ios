@@ -31,10 +31,9 @@ class TransactionReceiptViewController: UIViewController {
         print("tx", parsedTx)
         
         
-        wallet = Wallet.instance
-        chain = .Bitcoin
+//        wallet = Wallet.instance
         
-        if let tx = parsedTx, let currencyWallet = wallet.wallets[chain!] {
+        if let tx = parsedTx, let currencyWallet = wallet.wallets[address.type] {
             
             print("wallet", currencyWallet)
             
