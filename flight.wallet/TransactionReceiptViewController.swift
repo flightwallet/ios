@@ -53,8 +53,21 @@ class TransactionReceiptViewController: UIViewController {
         }
     }
     
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "showSignedTXSegue" {
+            return self.signedTx != nil
+        } else {
+            return true
+        }
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        
+        if signedTx == nil {
+            showAlert(title: "Error", message: "Could not sign transaction!")
+        }
+        
         if let vc = segue.destination as? ShowQRViewController {
             if segue.identifier == "showSignedTXSegue" {
                 vc.data = signedTx!.body

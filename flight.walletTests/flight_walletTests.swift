@@ -93,5 +93,18 @@ ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a
         
         
     }
+    
+    func testBTCParseTX() {
+        let rawtx = """
+0100000001c2fbb74ffb350a8949aaed4846a3acaaf81251b3a96cbc464c06da5407bc8c38010000006b4830450221008eb90b018a4d60a181220566c3cb457e5e28c19254a61e725e57de5d8f3fc34502207b35bbe76f4bcb4e77180676d7f1b7a8e025f2f868949301a9d66507c6cd505b01210245f12096a5899e01dc45f237056a4ccf08117666613e921b432636e226ee5306feffffff0240420f000000000017a9142fd602e65a8da462e1871cc3a0224f730cd792698708030a04000000001976a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac00000000
+"""
+        
+        let tx = BTCTransaction(from: rawtx)
+        
+        
+        XCTAssertEqual(tx?.tx_outputs?[0].address?.body, "2MwcA84sytaBBWwv44LubfHFGaWSunZk2tH", "btc script check")
+        XCTAssertEqual(tx?.tx_outputs?[1].address?.body, "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM", "btc script check")
+        
+    }
 
 }
