@@ -123,7 +123,9 @@ ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a
 ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a0000801c8080
 """
         
-        let tx = wallet.decode(tx: unsigned_tx)
+        let decoded_tx = wallet.decode(tx: unsigned_tx)!
+        
+        let tx = wallet.sign(tx: decoded_tx)
         
         print("sender", tx?.sender)
         
@@ -137,7 +139,7 @@ ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a
         
         XCTAssertEqual(tx?.body, "0xf86d8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a0000801ca0ce2b15b79354ea235ca445365b6e01f2cb8cb95bffb8036fb18f8239bed09c9da06c0c217a7ecf1531a5cd5db243b5aa750b4bf573d6a5e1ab4228ec6cf1b3ff45", "tx signed correctly")
         
-        XCTAssertEqual(tx?.tx_inputs?[0].address?.body, "0x9F6F4a757Cbcc2AcA6e8b5A8ff667ab2Ada2420B", "eth input check")
+        XCTAssertEqual(tx?.tx_inputs?[0].address?.body, "0x8101136E114C8678761AA5964D0ae03C71f427f7", "eth input check")
         XCTAssertEqual(tx?.tx_outputs?[0].address?.body, "0xf8558382014485843b9aCa008382520880A0a0a0", "eth output check")
         
     }
