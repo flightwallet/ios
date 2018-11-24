@@ -409,5 +409,12 @@ class EthereumWallet: CryptoWallet {
         return nil
     }
     
+    func sync(update: WalletUpdateInfo) -> Bool {
+        return true
+    }
+    
+    func buildTx(from address: Address?, to: AbstractAddress, value: Double) -> Transaction? {
+        fatalError("Not implemented")
+    }
     
 }

@@ -10,6 +10,161 @@ import XCTest
 @testable import flight_wallet
 import CoreBitcoin
 
+let utxo_json = """
+[
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "24a4f491809f0e937eba35bbff76fd89d7c698dda3336b19a957f5b0c2605322",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.01,
+"value": 1000000,
+"height": 1445028,
+"confirmations": 17
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "d6c10d4c28982c864b9b9f581ffa47aa2e5634c861672fa763d2ef87376645a3",
+"vout": 1,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.10155473,
+"value": 10155473,
+"height": 1444996,
+"confirmations": 49
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "e398f88a38a2e3e9648c5ea08e2af819f7f17fc870ab6b4f80762dea7b2089ee",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.001,
+"value": 100000,
+"height": 1444991,
+"confirmations": 54
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "f597ee99260aadd9fc3016cb2e4fb8ff40e0c2cde42b73b330811ffd50612e33",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.01,
+"value": 1000000,
+"height": 1444990,
+"confirmations": 55
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "d18b12d51a54289ce1febca5484c072392c2ca0172fb4f726f7c97ece2adb1b0",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.001,
+"value": 100000,
+"height": 1444905,
+"confirmations": 140
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "25713c445887f5e64b94285b4cae5c668c58101fc05bc3d1492c5863d05c4efc",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.1,
+"value": 10000000,
+"height": 1444745,
+"confirmations": 300
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "0d154cfe8a280baae00281bf391c38ac91ed62a589025e1311887091ddee598f",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.01,
+"value": 1000000,
+"height": 1444593,
+"confirmations": 452
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "694656cc9c68e307e146b1c1c30ad9b40613cbd11646231a0bfe4d149825b3e9",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.001,
+"value": 100000,
+"height": 1444505,
+"confirmations": 540
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "3243000f34e67161a23259fbf4637a2f1ffd475af266a130fc14a9a425c819a1",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.002,
+"value": 200000,
+"height": 1444505,
+"confirmations": 540
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "1f0c2379f9a9d01de0ebeb5bc3e820ffab5c4e237cd86db27a49aea76811bd4d",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.01,
+"value": 1000000,
+"height": 1444504,
+"confirmations": 541
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "7336e7915b61fb162ac15fa417fd54a33e1a08ad549cc0f39c6cdf2bf18a5095",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.1,
+"value": 10000000,
+"height": 1442406,
+"confirmations": 2639
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "188e26e307f054846e8c5896167440b244db8eb4aef3a1c09f584463cf5fcce1",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.01,
+"value": 1000000,
+"height": 1442405,
+"confirmations": 2640
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "e20f75489f89611ee27560cc28cf39d17580f2ffeaef82918a41c3ac1dda990c",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.01,
+"value": 1000000,
+"height": 1442133,
+"confirmations": 2912
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "32989c99107c0b0b69ef51a2a55d3394378c4b75181bb6ee3c177e25b9841861",
+"vout": 0,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.1,
+"value": 10000000,
+"height": 1441628,
+"confirmations": 3417
+},
+{
+"address": "n274QqGLtTpbdKtJATCstFJs96tmT2V1qM",
+"tx_hash": "026ae1ac887b0ba3f61f64a7b7bb97c4fcbff6aaaa93f60d6fb5ce9f63a81273",
+"vout": 1,
+"script": "76a914e1d5c3b5919b5c9249469ddedd4a0ed10c5884e088ac",
+"amount": 0.5775,
+"value": 57750000,
+"height": 1441570,
+"confirmations": 3475
+}
+]
+"""
+
 class flight_walletTests: XCTestCase {
 
     var seed: Data!
@@ -143,5 +298,34 @@ ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a
         XCTAssertEqual(tx?.tx_outputs?[0].address?.body, "0xf8558382014485843b9aCa008382520880A0a0a0", "eth output check")
         
     }
-
+    
+    
+    
+    func testBTCUpdateWalletUtxos() {
+        let wallet = BitcoinWallet(from: seed)
+        let update = BitcoinWalletUpdate(from: utxo_json)!
+        
+        let isUpdated = wallet.sync(update: update)
+        
+        XCTAssertTrue(isUpdated, "wallet updates")
+        
+        XCTAssert(wallet.storage.outputs.count > 0, "wallet now has utxos")
+        
+        XCTAssert(wallet.storage.outputs.count < 20, "wallet does not import them twice")
+    }
+    
+    func testBTCBuildTx() {
+        let wallet = BitcoinWallet(from: seed)
+        let update = BitcoinWalletUpdate(from: utxo_json)!
+        
+        let isUpdated = wallet.sync(update: update)
+        XCTAssertTrue(isUpdated, "wallet updates")
+        
+        let addr = BTCAddress(string: "mjoyi9JuAgfagT4vcpVxvydbkMW9HrPTPz")!
+        
+        let tx = wallet.buildTx(to: addr, value: 0.05)
+        
+        XCTAssert(tx != nil, "tx built ok")
+    }
+    
 }

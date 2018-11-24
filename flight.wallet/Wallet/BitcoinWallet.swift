@@ -180,6 +180,11 @@ extension BTCTransaction: Transaction {
     }
 }
 
+func ==(lhs: BTCTransactionOutput, rhs: BTCTransactionOutput) -> Bool {
+    return lhs.transactionID == rhs.transactionID
+        && lhs.index == rhs.index
+}
+
 extension BTCTransaction: SignedTransaction {
     var unsigned: Transaction {
         return self
@@ -194,6 +199,76 @@ extension BTCTransaction: SignedTransaction {
     }
 }
 
+//    unspent_output_schema = Schema({
+//        'tx_hash': str,
+//        'script': str,
+//        'value': int,
+//        'vout': int,
+//        'height': int,
+//        'confirmations': int
+//    })
+
+struct UTXOs: Codable {
+    let list: [UTXO]
+}
+
+struct UTXO: Codable {
+    let tx_hash: String
+    let vout: Int
+    let script: String
+    let value: Int
+    let height: Int
+    let confirmations: Int
+    
+    init(_ output: BTCTransactionOutput) {
+        value = Int(output.value)
+        script = output.script.string
+            
+        tx_hash = output.transactionID
+        vout = Int(output.index)
+        
+        height = output.blockHeight
+        confirmations = Int(output.confirmations)
+    }
+    
+    func toOutput() -> BTCTransactionOutput? {
+        let script = BTCScript(hex: self.script)
+        
+        guard let output = BTCTransactionOutput(value: BTCAmount(value), script: script) else { return nil }
+        
+        output.transactionID = tx_hash
+        output.index = UInt32(vout)
+        
+        output.blockHeight = height
+        output.confirmations = UInt(confirmations)
+        
+        return output
+    }
+}
+
+struct BitcoinWalletUpdate: WalletUpdateInfo {
+    static let JSON = JSONDecoder()
+    var type: Chain = .Bitcoin
+    var forAddress: Address? = nil
+    
+    var isOverride: Bool = false
+    var newUnspents: [BTCTransactionOutput] = []
+    
+    init?(from json: String) {
+        let data = json.data(using: .utf8)!
+        
+        debug("json", data)
+        
+        let utxos = try! BitcoinWalletUpdate.JSON.decode([UTXO].self, from: data)
+        
+        print(utxos)
+        
+        newUnspents = utxos.map { utxo in
+            return utxo.toOutput() ?? nil
+        }.compactMap { utxo in utxo }
+    }
+}
+
 class BitcoinWallet: CryptoWallet {
     var type = Chain.Bitcoin
     var addresses: [Address] = [
@@ -201,9 +276,11 @@ class BitcoinWallet: CryptoWallet {
     ]
     
     var keychain: BTCKeychain!
+    var storage: BitcoinUnspentsStorage
     
     required init(from seed: Data) {
         keychain = BTCKeychain(seed: seed, network: .testnet())!
+        storage = BitcoinUnspentsStorage()
     }
     
     func generateAddress(index: Int = 1, isMainnet: Bool = false) -> Address? {
@@ -330,5 +407,129 @@ class BitcoinWallet: CryptoWallet {
     func decode(tx: String) -> Transaction? {
         return BTCTransaction(from: tx)
     }
+    
+    func sync(update: WalletUpdateInfo) -> Bool {
+        guard update.type == .Bitcoin else { return false }
+        
+        let update = update as! BitcoinWalletUpdate
+        
+        print("addresses", update.newUnspents.map { output in output.address })
+        
+        return storage.update(newUnspents: update.newUnspents)
+    }
+    
+    func buildTx(from: Address? = nil, to toAddress: AbstractAddress, value: Double) -> Transaction? {
+        let fromAddress = from ?? generateAddress(index: 1)
+        
+        debug("paying from", fromAddress)
+        
+        guard fromAddress?.type == .Bitcoin else { return nil }
+        guard toAddress.type == .Bitcoin else { return nil }
+        
+        let destinationAddress = BTCAddress(string: toAddress.body)
+        let changeAddress = BTCAddress(string: fromAddress!.body)
+
+        let tx = BTCTransaction()
+        
+        var spentCoins = BTCAmount(0)
+        let amount = BTCAmount(value) * BTCCoin
+        let fee = BTCAmount(5000)
+        
+        storage.outputs.forEach { output in
+            let input = BTCTransactionInput()
+            input.transactionOutput = output
+            tx.addInput(input)
+            spentCoins += output.value
+        }
+        
+        let paymentOutput = BTCTransactionOutput(value: spentCoins, address: destinationAddress)
+        let changeOutput = BTCTransactionOutput(value: (spentCoins - (amount + fee)), address: changeAddress)
+        
+        tx.addOutput(paymentOutput)
+        tx.addOutput(changeOutput)
+        
+//
+//        tx.tx_inputs.forEach { output in
+//
+//            let redeemScript = try? tx.signatureHash(for: output.script, inputIndex: output.index, hashType: .SIGHASH_ALL)
+//
+//        }
+        
+        return tx
+        
+//        let tx = BTCTransactionBuilder.init()
+//
+//        tx.dataSource = storage
+//
+//        let _tx = try? tx.buildTransaction()
+    }
+    
 }
 
+class BitcoinUnspentsStorage: NSObject, BTCTransactionBuilderDataSource {
+    var outputs: [BTCTransactionOutput] = []
+    
+    static let storageKey = "bitcoin:utxo"
+    var defaults: UserDefaults?
+    
+    init(_ outputs: [BTCTransactionOutput]) {
+        super.init()
+        
+        self.outputs = outputs
+    }
+    
+    convenience init(defaults: UserDefaults = .standard) {
+//        guard let addr_str = address.body else {
+//            fatalError("Can't init address")
+//        }
+        
+        
+        let utxos = defaults.array(forKey: BitcoinUnspentsStorage.storageKey) as? [UTXO] ?? []
+        
+        let outputs = utxos.map { utxo -> BTCTransactionOutput in
+            if let output = utxo.toOutput() {
+                return output
+            } else {
+                fatalError("Cant parse outputs from local db")
+            }
+        }
+        
+        self.init(outputs)
+    }
+    
+    func saveState() {
+        guard let defaults = defaults else { return }
+        
+        let utxo = outputs.map(UTXO.init)
+        
+        defaults.set(utxo, forKey: BitcoinUnspentsStorage.storageKey)
+    }
+    
+    func update(newUnspents: [BTCTransactionOutput]) -> Bool {
+        let newOutputs = newUnspents.filter { newOutput in
+//            return !outputs.contains(where: { existingOutput in
+//                print("compare", newOutput.address!, existingOutput.address!)
+//                return newOutput.address! == existingOutput.address!
+//            })
+            
+            return !outputs.contains(newOutput)
+        }
+        
+        print("updte", newUnspents)
+        
+        print("updte", newOutputs)
+        
+        print("old", outputs)
+        
+        outputs += newOutputs
+        
+        return newOutputs.count > 0
+    }
+    
+    func unspentOutputs(for txbuilder: BTCTransactionBuilder!) -> NSEnumerator! {
+        let sorted_outputs = outputs.sorted { o1, o2 in o1.blockHeight > o2.blockHeight }
+        
+        return NSMutableSet(array: sorted_outputs).objectEnumerator()
+    }
+
+}
