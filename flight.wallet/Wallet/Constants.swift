@@ -27,6 +27,14 @@ enum Chain {
     }
 }
 
+func debug(_ label: Any?, _ value: Any? = nil) {
+    if value == nil {
+        print(label ?? "nil")
+    } else {
+        print(label ?? "value", value as Any)
+    }
+}
+
 protocol AbstractAddress {
     var isMainnet: Bool { get }
     var type: Chain { get }
@@ -45,6 +53,8 @@ struct Address: AbstractAddress {
     
     let body: String?
 }
+
+extension Address: Hashable {}
 
 func ==(left: AbstractAddress, right: AbstractAddress) -> Bool {
     return left.isMainnet == right.isMainnet
@@ -107,6 +117,12 @@ protocol SignedTransaction: Transaction {
     var signatures: [String] { get }
 }
 
+protocol WalletUpdateInfo {
+    init?(from json: String)
+    var type: Chain { get }
+    var forAddress: Address? { get }
+}
+
 protocol CryptoWallet {
     var type: Chain { get }
     var addresses: [Address] { get }
@@ -118,4 +134,7 @@ protocol CryptoWallet {
     func decode(tx: String) -> Transaction?
     func sign(tx: Transaction) -> SignedTransaction?
     func sign(tx: Transaction, address: Address) -> SignedTransaction?
+    
+    func sync(update: WalletUpdateInfo) -> Bool
+    func buildTx(from address: Address?, to: AbstractAddress, value: Double) -> Transaction?
 }

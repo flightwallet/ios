@@ -27,8 +27,8 @@ class TransactionReceiptViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        print("chain", chain)
-        print("tx", parsedTx)
+        debug("chain", chain)
+        debug("tx", parsedTx)
         
         
 //        wallet = Wallet.instance
@@ -43,7 +43,7 @@ class TransactionReceiptViewController: UIViewController {
                 self.transaction = transaction
                 self.signedTx = currencyWallet.sign(tx: transaction)
                 
-                print("signed", self.signedTx)
+                debug("signed", self.signedTx)
                 self.isSigned = true
                 
                 self.detailedView.transaction = signedTx ?? transaction

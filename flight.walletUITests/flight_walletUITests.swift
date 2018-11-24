@@ -34,7 +34,7 @@ class flight_walletUITests: XCTestCase {
         let app = XCUIApplication()
         let toolbar = app.toolbars["Toolbar"]
         toolbar.buttons["UNLOCK"].tap()
-        app.tables.staticTexts["n274QqGLtTpbdKtJATCstFJs96tmT2V1qM"].tap()
+        app.tables.staticTexts["Bitcoin Testnet"].tap()
         toolbar.buttons["PAY"].tap()
         toolbar.buttons["PROCEED"].tap()
 
@@ -61,7 +61,7 @@ class flight_walletUITests: XCTestCase {
         let app = XCUIApplication()
         let toolbar = app.toolbars["Toolbar"]
         toolbar.buttons["UNLOCK"].tap()
-        app.tables.staticTexts["n274QqGLtTpbdKtJATCstFJs96tmT2V1qM"].tap()
+        app.tables.staticTexts["Bitcoin Testnet"].tap()
         toolbar.buttons["PAY"].tap()
         toolbar.buttons["PROCEED"].tap()
         

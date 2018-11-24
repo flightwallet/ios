@@ -50,18 +50,18 @@ extension BTCTransactionOutput: TransactionOutput {
         
         if script.isPayToPublicKeyHashScript {
             let address = script.standardAddress
-            print(address)
+            debug(address)
             
             let addressTestnet = BTCPublicKeyAddressTestnet(data: address?.data)
-            print(addressTestnet)
+            debug(addressTestnet)
             
             return addressTestnet
         } else if script.isPayToScriptHashScript {
             let address = script.standardAddress
-            print(address)
+            debug(address)
             
             let addressTestnet = BTCScriptHashAddressTestnet(data: address?.data)
-            print(addressTestnet)
+            debug(addressTestnet)
             
             return addressTestnet
 //
@@ -92,16 +92,6 @@ extension BTCTransaction: Transaction {
             .filter { output in output.address != nil && output.address! != ownerAddress }
         
         return myOutputs.reduce(0, { sum, output in sum + (output.amount ?? 0) })
-        
-        let change = estimateChange(ownerAddress: ownerAddress)
-        
-        guard let total = total else { fatalError("Transaction without amount") }
-        
-        let amount = total - change
-        
-        guard amount >= 0 else { fatalError("Transaction passing negative value, calculation error") }
-        
-        return amount
     }
     
     func estimateChange(ownerAddress: AbstractAddress) -> Double {
@@ -358,7 +348,7 @@ class BitcoinWallet: CryptoWallet {
             
             let script = BTCScript(address: key.addressTestnet)
             
-            script?.scriptHashAddressTestnet
+//            script?.scriptHashAddressTestnet
             print("\n")
             print("script pub key", script!.string!)
             

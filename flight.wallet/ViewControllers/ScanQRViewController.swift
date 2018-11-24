@@ -156,7 +156,7 @@ class ScanQRViewController: UIViewController, AVCaptureMetadataOutputObjectsDele
             vc.address = address
             vc.wallet = wallet
             
-            print("tx", parsedTx)
+            debug("tx", parsedTx)
             print("address", address)
             print("wallet", wallet)
         }

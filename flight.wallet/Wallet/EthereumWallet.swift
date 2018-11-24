@@ -395,11 +395,11 @@ class EthereumWallet: CryptoWallet {
         
         let signed = try? tx.sign(with: ethKey, chainId: 4)
         
-        print("tx", signed)
+        debug("tx", signed)
         
-        print("tx signature", signed?.verifySignature())
+        debug("tx signature", signed?.verifySignature())
         
-        print("tx raw hex", signed?.rlp().ethereumValue().ethereumData?.hex())
+        debug("tx raw hex", signed?.rlp().ethereumValue().ethereumData?.hex())
         
         
         return signed
