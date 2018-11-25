@@ -270,7 +270,7 @@ ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a
     }
     
     
-    func testETHParseTX() {
+    func xtestETHParseTX() {
         
         let wallet = EthereumWallet(from: seed)
         
@@ -311,6 +311,20 @@ ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a
         
         XCTAssert(wallet.storage.outputs.count > 0, "wallet now has utxos")
         
+        XCTAssert(wallet.storage.outputs.count < 20, "wallet does not import them twice")
+    }
+    
+    func testBTCStorageNoDuplicates() {
+        let wallet = BitcoinWallet(from: seed)
+        let update = BitcoinWalletUpdate(from: utxo_json)!
+        
+        let isUpdated = wallet.sync(update: update)
+        XCTAssertTrue(isUpdated, "wallet updates")
+        
+        let isUpdatedTwice = wallet.sync(update: update)
+        XCTAssertFalse(isUpdatedTwice, "wallet doesnt update: duplicate data")
+        
+        XCTAssert(wallet.storage.outputs.count > 0, "wallet now has utxos")
         XCTAssert(wallet.storage.outputs.count < 20, "wallet does not import them twice")
     }
     
