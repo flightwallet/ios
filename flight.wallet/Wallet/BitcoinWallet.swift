@@ -497,12 +497,10 @@ class BitcoinUnspentsStorage: NSObject, BTCTransactionBuilderDataSource {
     
     func update(newUnspents: [BTCTransactionOutput]) -> Bool {
         let newOutputs = newUnspents.filter { newOutput in
-//            return !outputs.contains(where: { existingOutput in
-//                print("compare", newOutput.address!, existingOutput.address!)
-//                return newOutput.address! == existingOutput.address!
-//            })
-            
-            return !outputs.contains(newOutput)
+            return !outputs.contains(where: { existingOutput in
+                print("compare", newOutput.address!, existingOutput.address!)
+                return newOutput == existingOutput
+            })
         }
         
         print("updte", newUnspents)
