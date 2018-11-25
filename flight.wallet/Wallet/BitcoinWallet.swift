@@ -340,22 +340,8 @@ class BitcoinWallet: CryptoWallet {
         completion(nil)
     }
     
-    
-    func sign(tx: Transaction) -> SignedTransaction? {
-        if let (tx, _) = sign(tx: tx.body) {
-            return tx
-        } else {
-            return nil
-        }
-    }
-    
-    func sign(tx rawhex: String) -> (BTCTransaction, [BTCScript])? {
-        
-        guard let unsigned_tx = BTCTransaction.init(hex: rawhex) else {
-            return nil
-        }
-        
-        guard let inputs = unsigned_tx.inputs as? [BTCTransactionInput] else {
+    func signBitcoin(tx: BTCTransaction) -> BTCTransaction? {
+        guard let inputs = tx.inputs as? [BTCTransactionInput] else {
             return nil
         }
         
@@ -377,11 +363,11 @@ class BitcoinWallet: CryptoWallet {
             
             let script = BTCScript(address: key.addressTestnet)
             
-//            script?.scriptHashAddressTestnet
+            //            script?.scriptHashAddressTestnet
             print("\n")
             print("script pub key", script!.string!)
             
-            let hash = try! unsigned_tx.signatureHash(for: script, inputIndex: UInt32(index), hashType: .SIGHASH_ALL)
+            let hash = try! tx.signatureHash(for: script, inputIndex: UInt32(index), hashType: .SIGHASH_ALL)
             
             print("\n")
             print("hash", BTCHexFromData(hash)!)
@@ -407,22 +393,44 @@ class BitcoinWallet: CryptoWallet {
             sigs += [sig]
         }
         
+        
         print("\n")
         print("sigs", sigs)
+        print("tx", tx)
         
-        print("signed raw hex", unsigned_tx.hex!)
+        print("signed raw hex", tx.hex!)
+        print("body hex", tx.body)
         
-        return (unsigned_tx, sigs)
+        return tx
+    }
+    
+    func sign(tx unsigned_tx: Transaction) -> SignedTransaction? {
+        return signBitcoin(tx: unsigned_tx as! BTCTransaction)
+        
+//        if let (tx, _) = sign(tx: tx.body) {
+//            return tx
+//        } else {
+//            return nil
+//        }
+    }
+    
+    func sign(tx rawhex: String) -> (BTCTransaction, [BTCScript])? {
+        
+        guard let unsigned_tx = BTCTransaction.init(hex: rawhex) else {
+            return nil
+        }
+        
+        guard let signed = signBitcoin(tx: unsigned_tx) else {
+            return nil
+        }
+        
+        return (signed, []) // as? (BTCTransaction, [BTCScript])
     }
     
     func sign(tx: Transaction, address: Address) -> SignedTransaction? {
         return sign(tx: tx)
     }
-    
-    func decode(tx: Transaction) -> DecodedTransaction? {
-        return nil
-    }
-    
+
     func decode(tx: String) -> Transaction? {
         return BTCTransaction(from: tx)
     }
@@ -451,17 +459,18 @@ class BitcoinWallet: CryptoWallet {
         let tx = BTCTransaction()
         
         var spentCoins = BTCAmount(0)
-        let amount = BTCAmount(value) * BTCCoin
+        let amount = BTCAmount(value * Double(BTCCoin))
         let fee = BTCAmount(5000)
         
         storage.outputs.forEach { output in
             let input = BTCTransactionInput()
-            input.transactionOutput = output
+            input.previousHash = output.transactionHash
+            input.previousIndex = output.index
             tx.addInput(input)
             spentCoins += output.value
         }
         
-        let paymentOutput = BTCTransactionOutput(value: spentCoins, address: destinationAddress)
+        let paymentOutput = BTCTransactionOutput(value: amount, address: destinationAddress)
         let changeOutput = BTCTransactionOutput(value: (spentCoins - (amount + fee)), address: changeAddress)
         
         tx.addOutput(paymentOutput)

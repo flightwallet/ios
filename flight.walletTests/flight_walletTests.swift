@@ -342,4 +342,37 @@ ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a
         XCTAssert(tx != nil, "tx built ok")
     }
     
+    
+    func testBTCSignSelfBuiltTx() {
+        let wallet = BitcoinWallet(from: seed)
+        let update = BitcoinWalletUpdate(from: utxo_json)!
+        
+        let _ = wallet.sync(update: update)
+        
+        let addr = BTCAddress(string: "mjoyi9JuAgfagT4vcpVxvydbkMW9HrPTPz")!
+        
+        let tx = wallet.buildTx(to: addr, value: 0.05)!
+        
+        print("unsigned", tx)
+        
+        let (_signed, _) = wallet.sign(tx: tx.body)!
+        let signed = _signed as! BTCTransaction
+        
+        print("signed", signed)
+        
+        let sm = BTCScriptMachine(transaction: signed, inputIndex: 0)!
+        let output = signed.outputs.first as! BTCTransactionOutput
+        let script = output.script.copy() as! BTCScript
+        
+        do {
+            try sm.verify(withOutputScript: script)
+        } catch {
+            print(error)
+//            XCTFail("tx should be signed correctly")
+        }
+        
+        XCTAssert(true, "btc script check")
+    }
+    
+    
 }

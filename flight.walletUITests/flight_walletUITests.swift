@@ -38,14 +38,17 @@ class flight_walletUITests: XCTestCase {
         toolbar.buttons["PAY"].tap()
         toolbar.buttons["PROCEED"].tap()
 
+        sleep(5)
+        
         let clearTextField = String(repeating: XCUIKeyboardKey.delete.rawValue, count: 15)
         
         app.typeText(clearTextField + rawtx)
         
+        sleep(2)
+        
         app.buttons["Parse"].tap()
         
         // scan QR code
-        
         
         toolbar.buttons["APPROVE"].tap()
         app.children(matching: .window).element(boundBy: 0).children(matching: .other).element(boundBy: 4).children(matching: .other).element.children(matching: .other).element.tap()

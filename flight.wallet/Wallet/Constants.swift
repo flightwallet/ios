@@ -130,7 +130,6 @@ protocol CryptoWallet {
     init(from seed: Data)
     
     func loaded(completion: @escaping (Address?) -> ())
-    func decode(tx: Transaction) -> DecodedTransaction?
     func decode(tx: String) -> Transaction?
     func sign(tx: Transaction) -> SignedTransaction?
     func sign(tx: Transaction, address: Address) -> SignedTransaction?
