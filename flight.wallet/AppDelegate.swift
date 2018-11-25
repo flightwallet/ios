@@ -13,7 +13,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let wallet = Wallet.instance
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -70,20 +70,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
         print("remote", userInfo)
-        
-        let notification = UILocalNotification.init()
-        notification.soundName = "default"
-        notification.alertBody = "Hey"
-        
-        
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        print("remote with handler", userInfo)
+        print("remote with handler")
         
-        let notification = UILocalNotification.init()
-        notification.soundName = "default"
-        notification.alertBody = "Hey"
+//        let notification = UILocalNotification.init()
+//        notification.soundName = "default"
+//        notification.alertBody = "Hey"
+//
+        if let data = userInfo["data"] as? [String: Any] {
+            debug("utxo", data)
+            
+            let utxo = UTXO(dict: data)
+            let walletUpdate = BitcoinWalletUpdate(utxo: utxo)
+            
+            wallet.update(update: walletUpdate)
+        }
         
         completionHandler(UIBackgroundFetchResult.noData)
     }

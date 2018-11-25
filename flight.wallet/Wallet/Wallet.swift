@@ -115,6 +115,14 @@ class Wallet {
         self.add(wallet: ethWallet)
     }
     
+    func update(update: WalletUpdateInfo) {
+        if let update = update as? BitcoinWalletUpdate {
+            wallets[.Bitcoin]!.sync(update: update)
+        } else {
+            fatalError("Does not implement ETH updates yet")
+        }
+    }
+    
     func loaded(completion: @escaping () -> ()) {
         if isLoaded {
             return completion()

@@ -210,7 +210,17 @@ struct UTXO: Codable {
     let height: Int
     let confirmations: Int
     
-    init(_ output: BTCTransactionOutput) {
+    init(dict: [String: Any]) {
+        tx_hash     = dict["tx_hash"] as! String
+        vout        = dict["vout"] as! Int
+        script      = dict["script"] as! String
+        value       = dict["value"] as! Int
+        height      = dict["height"] as! Int
+        
+        confirmations = dict["confirmations"] as! Int
+    }
+    
+    init(output: BTCTransactionOutput) {
         value = Int(output.value)
         script = output.script.string
             
@@ -244,18 +254,37 @@ struct BitcoinWalletUpdate: WalletUpdateInfo {
     var isOverride: Bool = false
     var newUnspents: [BTCTransactionOutput] = []
     
+    init(utxos: [UTXO]) {
+        newUnspents = utxos.map { utxo in
+            return utxo.toOutput() ?? nil
+        }.compactMap { utxo in utxo }
+    }
+    
+    init(utxo: UTXO) {
+        newUnspents = [ utxo.toOutput()! ]
+    }
+    
     init?(from json: String) {
         let data = json.data(using: .utf8)!
         
         debug("json", data)
         
-        let utxos = try! BitcoinWalletUpdate.JSON.decode([UTXO].self, from: data)
+        if let utxos = try? BitcoinWalletUpdate.JSON.decode([UTXO].self, from: data) {
         
-        print(utxos)
+            print(utxos)
+            
+            newUnspents = utxos.map { utxo in
+                return utxo.toOutput() ?? nil
+            }.compactMap { utxo in utxo }
+            
+        } else if let utxo = try? BitcoinWalletUpdate.JSON.decode(UTXO.self, from: data) {
+            print(utxo)
+            
+            newUnspents = [ utxo.toOutput()! ]
+        } else {
+            fatalError("Cant parse JSON into UTXO format")
+        }
         
-        newUnspents = utxos.map { utxo in
-            return utxo.toOutput() ?? nil
-        }.compactMap { utxo in utxo }
     }
 }
 
