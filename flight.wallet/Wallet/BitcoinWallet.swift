@@ -435,6 +435,13 @@ class BitcoinWallet: CryptoWallet {
         return BTCTransaction(from: tx)
     }
     
+    func decode(url: String) -> (AbstractAddress, Double, Data)? {
+        guard let url = URL(string: url) else { return nil }
+        guard let parsed = BTCBitcoinURL(url: url) else { return nil }
+        
+        return (parsed.address!, Double(parsed.amount) / Double(BTCCoin), Data())
+    }
+    
     func sync(update: WalletUpdateInfo) -> Bool {
         guard update.type == .Bitcoin else { return false }
         

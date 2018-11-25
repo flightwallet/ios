@@ -33,22 +33,28 @@ class TransactionReceiptViewController: UIViewController {
         
 //        wallet = Wallet.instance
         
-        if let tx = parsedTx, let currencyWallet = wallet.wallets[address.type] {
+        if let str = parsedTx, let currencyWallet = wallet.wallets[address.type] {
             
             print("wallet", currencyWallet)
             
-            if let transaction = currencyWallet.decode(tx: tx) {
+            if let request = currencyWallet.decode(url: str) {
+                let (address, value, _) = request
+                let tx = currencyWallet.buildTx(from: self.address, to: address, value: value)
+                
+                self.transaction = tx
+            } else if let transaction = currencyWallet.decode(tx: str) {
                 print("ptx", transaction)
                 
                 self.transaction = transaction
-                self.signedTx = currencyWallet.sign(tx: transaction)
-                
-                debug("signed", self.signedTx)
-                self.isSigned = true
-                
-                self.detailedView.transaction = signedTx ?? transaction
-                self.detailedView.updateLabels()
             }
+        
+            self.signedTx = currencyWallet.sign(tx: transaction!)
+            
+            debug("signed", self.signedTx)
+            self.isSigned = true
+            
+            self.detailedView.transaction = signedTx ?? transaction
+            self.detailedView.updateLabels()
         }
     }
     
@@ -71,6 +77,9 @@ class TransactionReceiptViewController: UIViewController {
             if segue.identifier == "showSignedTXSegue" {
                 vc.data = signedTx!.body
                 vc.type = .SignedTransaction
+                
+//                let setSpent = 
+//                wallet.update(update: setSpent)
             } else {
                 
             }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B46AEED21AA6D8200B182F5 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46AEEC21AA6D8200B182F5 /* MainViewController.swift */; };
 		2B5E8B282184F5EF00604744 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B272184F5EF00604744 /* AppDelegate.swift */; };
 		2B5E8B2A2184F5EF00604744 /* WalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B292184F5EF00604744 /* WalletViewController.swift */; };
 		2B5E8B2C2184F5EF00604744 /* ScanQRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5E8B2B2184F5EF00604744 /* ScanQRViewController.swift */; };
@@ -49,6 +50,7 @@
 		04DAD94B57D9BF784B45B74E /* Pods-flight.walletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flight.walletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-flight.walletTests/Pods-flight.walletTests.release.xcconfig"; sourceTree = "<group>"; };
 		1572D5C7567599BA4904F05D /* Pods-flight.wallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-flight.wallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-flight.wallet/Pods-flight.wallet.debug.xcconfig"; sourceTree = "<group>"; };
 		2B151F7321A7FF0300386687 /* flight.wallet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = flight.wallet.entitlements; sourceTree = "<group>"; };
+		2B46AEEC21AA6D8200B182F5 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		2B5E8B242184F5EF00604744 /* flight.wallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flight.wallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B5E8B272184F5EF00604744 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B5E8B292184F5EF00604744 /* WalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewController.swift; sourceTree = "<group>"; };
@@ -113,6 +115,7 @@
 				2B5E8B6321852FAC00604744 /* ShowQRViewController.swift */,
 				2B5E8B612185214E00604744 /* TransactionReceiptViewController.swift */,
 				2B5E8B5F21851B7E00604744 /* TransactionDetailedViewController.swift */,
+				2B46AEEC21AA6D8200B182F5 /* MainViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -386,6 +389,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B5E8B622185214E00604744 /* TransactionReceiptViewController.swift in Sources */,
+				2B46AEED21AA6D8200B182F5 /* MainViewController.swift in Sources */,
 				2B5E8B582184F88E00604744 /* Wallet.swift in Sources */,
 				2BFA2668218BC9DE006961FD /* UIKit+Extensions.swift in Sources */,
 				2B5E8B2C2184F5EF00604744 /* ScanQRViewController.swift in Sources */,

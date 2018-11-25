@@ -372,6 +372,10 @@ class EthereumWallet: CryptoWallet {
         
     }
     
+    func decode(url: String) -> (AbstractAddress, Double, Data)? {
+        return nil
+    }
+    
     func sign(tx: Transaction) -> SignedTransaction? {
         guard let tx = tx as? EthereumTransaction else {
             fatalError("Can't sign non-ethereum transaction in Ethereum wallet")

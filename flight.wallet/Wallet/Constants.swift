@@ -131,6 +131,7 @@ protocol CryptoWallet {
     
     func loaded(completion: @escaping (Address?) -> ())
     func decode(tx: String) -> Transaction?
+    func decode(url: String) -> (AbstractAddress, Double, Data)?
     func sign(tx: Transaction) -> SignedTransaction?
     func sign(tx: Transaction, address: Address) -> SignedTransaction?
     
