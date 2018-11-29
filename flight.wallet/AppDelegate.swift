@@ -86,6 +86,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let walletUpdate = BitcoinWalletUpdate(utxo: utxo)
             
             wallet.update(update: walletUpdate)
+        } else {
+            debug("cant parse", userInfo["data"])
         }
         
         completionHandler(UIBackgroundFetchResult.noData)
@@ -96,6 +98,10 @@ extension AppDelegate {
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         
         print("url", url)
+        
+        
+        
+        
         
         
         

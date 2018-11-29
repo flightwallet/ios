@@ -496,6 +496,17 @@
                                             </connections>
                                         </button>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" id="jBI-Z7-QwX">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zg1-T5-MLH">
+                                            <rect key="frame" x="359" y="4.5" width="0.0" height="51"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="32"/>
+                                            <state key="normal" title="FINISH"/>
+                                            <connections>
+                                                <action selector="proceed:" destination="VT5-Pr-Q6r" eventType="touchUpInside" id="urO-t3-ECB"/>
+                                            </connections>
+                                        </button>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                         </subviews>
@@ -525,7 +536,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="3658" y="-1133"/>
+            <point key="canvasLocation" x="3656.8000000000002" y="-1134.7826086956522"/>
         </scene>
         <!--Transaction Receipt View Controller-->
         <scene sceneID="oo8-Jh-X9p">

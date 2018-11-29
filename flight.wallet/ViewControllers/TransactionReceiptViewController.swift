@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreBitcoin
 
 class TransactionReceiptViewController: UIViewController {
     var parsedTx: String?
@@ -67,19 +68,19 @@ class TransactionReceiptViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        
-        if signedTx == nil {
-            showAlert(title: "Error", message: "Could not sign transaction!")
-        }
-        
         if let vc = segue.destination as? ShowQRViewController {
+    
+            if signedTx == nil {
+                showAlert(title: "Error", message: "Could not sign transaction!")
+            }
+    
             if segue.identifier == "showSignedTXSegue" {
-                vc.data = signedTx!.body
+                vc.data = signedTx!.signatures.joined(separator: ",")
                 vc.type = .SignedTransaction
                 
-//                let setSpent = 
-//                wallet.update(update: setSpent)
+                let bitcoinWallet = wallet.wallets[.Bitcoin] as! BitcoinWallet
+
+                bitcoinWallet.update(transaction: signedTx as! BTCTransaction)
             } else {
                 
             }

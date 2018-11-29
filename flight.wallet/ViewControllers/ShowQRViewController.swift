@@ -57,7 +57,15 @@ class ShowQRViewController: UIViewController {
     
     @IBAction func proceed(_ sender: Any) {
         if type == .SignedTransaction {
-            performSegue(withIdentifier: "goHomeSegue", sender: nil)
+            let pushtxURL = "https://flightwallet.org/terminal/decode-tx?tx=\(data!)&publish=true"
+            
+            let url = URL(string: pushtxURL)!
+            
+            UIApplication.shared.openURL(url)
+            
+            _ = navigationController?.popToRootViewController(animated: true)
+            
+//            performSegue(withIdentifier: "goHomeSegue", sender: nil)
         } else if type == .Address {
             performSegue(withIdentifier: "scanTransactionSegue", sender: nil)
         }

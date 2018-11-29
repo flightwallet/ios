@@ -19,6 +19,27 @@ let utxo_json = """
 "value": 76265642,
 "height": 1445113,
 "confirmations": 9
+},
+{
+"tx_hash": "4ab0b73e3622f82728e74e61dacf28d7dd07506071955ae318d0a60c4bd8612d",
+"vout": 0,
+"script": "76a914a185c715f1e70dd5dfa502c3d94cc47b9f78400e88ac",
+"value": 76265642,
+"height": 1445113,
+"confirmations": 9
+}
+]
+"""
+
+let spent_utxo_json = """
+[
+{
+"tx_hash": "4ab0b73e3622f82728e74e61dacf28d7dd07506071955ae318d0a60c4bd8612d",
+"vout": 1,
+"script": "76a914a185c715f1e70dd5dfa502c3d94cc47b9f78400e88ac",
+"value": 76265642,
+"height": 1445113,
+"confirmations": 9
 }
 ]
 """
@@ -185,6 +206,25 @@ ed8201ae843b9aca0082520894f8558382014485843b9aca008382520880a0a0a088016345785d8a
         XCTAssert(wallet.storage.outputs.count > 0, "wallet now has utxos")
         XCTAssert(wallet.storage.outputs.count < 20, "wallet does not import them twice")
     }
+    
+    func testBTCStorageRemovesSpent() {
+        let wallet = BitcoinWallet(from: seed)
+        
+        let update = BitcoinWalletUpdate(from: utxo_json)!
+        
+        let isUpdated = wallet.sync(update: update)
+        
+        XCTAssertTrue(isUpdated, "wallet updates")
+        XCTAssert(wallet.storage.outputs.count == 2, "wallet now has 2 utxos")
+        
+        let utxo = BitcoinWalletUpdate(from: spent_utxo_json)!.newUnspents.map(UTXO.init)
+        let removeSpent = BitcoinWalletUpdate(spent: utxo)
+        
+        let _ = wallet.sync(update: removeSpent)
+        
+        XCTAssert(wallet.storage.outputs.count == 1, "wallet now has 1 utxos")
+    }
+    
     
     func testBTCBuildTx() {
         let wallet = BitcoinWallet(from: seed)

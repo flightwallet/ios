@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "flight.walletTests/flight_walletTests.swift"
-            timestampString = "564822866.714919"
+            timestampString = "564828921.954164"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "81"
-            endingLineNumber = "81"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "testBTCSignature()"
             landmarkType = "7">
          </BreakpointContent>
@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "flight.wallet/ViewControllers/ShowQRViewController.swift"
-            timestampString = "564571507.624289"
+            timestampString = "564828921.954349"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
-            landmarkName = "goBack(_:)"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
+            landmarkName = "proceed(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

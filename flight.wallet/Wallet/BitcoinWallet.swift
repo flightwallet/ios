@@ -220,6 +220,15 @@ struct UTXO: Codable {
         confirmations = dict["confirmations"] as! Int
     }
     
+    init(outpoint: BTCOutpoint) {
+        value = -1
+        script = ""
+        height = -1
+        confirmations = 0
+        tx_hash = outpoint.txID
+        vout = Int(outpoint.index)
+    }
+    
     init(output: BTCTransactionOutput) {
         value = Int(output.value)
         script = output.script.string
@@ -253,6 +262,11 @@ struct BitcoinWalletUpdate: WalletUpdateInfo {
     
     var isOverride: Bool = false
     var newUnspents: [BTCTransactionOutput] = []
+    var newSpents: [UTXO] = []
+    
+    init(spent: [UTXO]) {
+        newSpents = spent
+    }
     
     init(utxos: [UTXO]) {
         newUnspents = utxos.map { utxo in
@@ -401,6 +415,9 @@ class BitcoinWallet: CryptoWallet {
         print("signed raw hex", tx.hex!)
         print("body hex", tx.body)
         
+        print("")
+        
+    
         return tx
     }
     
@@ -449,7 +466,37 @@ class BitcoinWallet: CryptoWallet {
         
         print("addresses", update.newUnspents.map { output in output.address })
         
+        
+        print("add", update.newUnspents)
+        
+        print("remove", update.newSpents)
+        
+        // TODO return
+        storage.update(spent: update.newSpents)
+        
         return storage.update(newUnspents: update.newUnspents)
+        
+    }
+    
+    func update(transaction: BTCTransaction ) {
+        let myAddress = generateAddress(index: 1)!
+        
+        let newUTXO = transaction.tx_outputs!.filter({ (output) -> Bool in
+            output.address! == myAddress
+        }).map { o in UTXO(output: o as! BTCTransactionOutput) }
+        let spentUTXO = (transaction.inputs as! [BTCTransactionInput]).map { i -> UTXO in
+            print(i)
+            print(i.transactionOutput)
+            print(i.outpoint)
+            
+            return UTXO(outpoint: i.outpoint)
+        }
+        
+        let newUTXOUpdate = BitcoinWalletUpdate(utxos: newUTXO)
+        let spentUTXOUpdate = BitcoinWalletUpdate(spent: spentUTXO)
+        
+        sync(update: newUTXOUpdate)
+        sync(update: spentUTXOUpdate)
     }
     
     func buildTx(from: Address? = nil, to toAddress: AbstractAddress, value: Double) -> Transaction? {
@@ -540,10 +587,29 @@ class BitcoinUnspentsStorage: NSObject, BTCTransactionBuilderDataSource {
         defaults.set(utxo, forKey: BitcoinUnspentsStorage.storageKey)
     }
     
+    func update(spent: [UTXO]) {
+        for utxo in spent {
+            guard let spentOutput = utxo.toOutput() else {
+                continue
+            }
+            
+            let _index = outputs.firstIndex { output in output == spentOutput }
+            
+            guard let index = _index else {
+                continue
+            }
+            
+            outputs.remove(at: index)
+        }
+        
+        saveState()
+        
+    }
+    
     func update(newUnspents: [BTCTransactionOutput]) -> Bool {
         let newOutputs = newUnspents.filter { newOutput in
             return !outputs.contains(where: { existingOutput in
-                print("compare", newOutput.address!, existingOutput.address!)
+//                print("compare", newOutput.address!, existingOutput.address!)
                 return newOutput == existingOutput
             })
         }
