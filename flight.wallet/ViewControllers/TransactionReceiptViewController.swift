@@ -75,7 +75,7 @@ class TransactionReceiptViewController: UIViewController {
             }
     
             if segue.identifier == "showSignedTXSegue" {
-                vc.data = signedTx!.signatures.joined(separator: ",")
+                vc.data = signedTx!.body
                 vc.type = .SignedTransaction
                 
                 let bitcoinWallet = wallet.wallets[.Bitcoin] as! BitcoinWallet
