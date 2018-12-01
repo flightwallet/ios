@@ -148,6 +148,9 @@
                                             <constraint firstAttribute="width" secondItem="6LV-kY-cgX" secondAttribute="height" multiplier="1:1" id="74z-Mf-Xna"/>
                                         </constraints>
                                         <state key="normal" title="Scan QR" image="Sync"/>
+                                        <connections>
+                                            <action selector="updateAccount:" destination="mA9-Ji-eLi" eventType="touchUpInside" id="M92-HK-1W9"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -497,7 +500,7 @@
                                         </button>
                                     </barButtonItem>
                                     <barButtonItem style="plain" id="jBI-Z7-QwX">
-                                        <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zg1-T5-MLH">
+                                        <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="zg1-T5-MLH">
                                             <rect key="frame" x="359" y="4.5" width="0.0" height="51"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="32"/>

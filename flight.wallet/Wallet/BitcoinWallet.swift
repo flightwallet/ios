@@ -207,7 +207,7 @@ struct UTXO: Codable {
     let vout: Int
     let script: String
     let value: Int
-    let height: Int
+    let height: Int?
     let confirmations: Int
     
     init(dict: [String: Any]) {
@@ -248,7 +248,7 @@ struct UTXO: Codable {
         output.transactionID = tx_hash
         output.index = UInt32(vout)
         
-        output.blockHeight = height
+        output.blockHeight = height ?? -1
         output.confirmations = UInt(confirmations)
         
         return output
@@ -456,6 +456,7 @@ class BitcoinWallet: CryptoWallet {
         guard let url = URL(string: url) else { return nil }
         guard let parsed = BTCBitcoinURL(url: url) else { return nil }
         
+        print("parsed url", parsed.address, parsed.amount)
         return (parsed.address!, Double(parsed.amount) / Double(BTCCoin), Data())
     }
     

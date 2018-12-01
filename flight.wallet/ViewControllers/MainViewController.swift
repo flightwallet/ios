@@ -36,4 +36,16 @@ class MainViewController: UIViewController {
 //            vc.wallet = wallet
         }
     }
+    
+    @IBAction func updateAccount(_ sender: Any) {
+        guard let address = wallet.wallets[.Bitcoin]?.addresses.first else {
+            return
+        }
+        
+        let syncAccountURL = "https://flightwallet.org/sync/?chain=bitcoin&address=\(address.body ?? "")"
+        
+        let url = URL(string: syncAccountURL)!
+        
+        UIApplication.shared.openURL(url)
+    }
 }
