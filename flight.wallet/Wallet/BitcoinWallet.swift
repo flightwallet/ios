@@ -516,12 +516,16 @@ class BitcoinWallet: CryptoWallet {
         let amount = BTCAmount(value * Double(BTCCoin))
         let fee = BTCAmount(5000)
         
-        storage.outputs.forEach { output in
+        for output in storage.outputs {
             let input = BTCTransactionInput()
             input.previousHash = output.transactionHash
             input.previousIndex = output.index
             tx.addInput(input)
             spentCoins += output.value
+            
+            if spentCoins >= (amount + fee) {
+                break
+            } // dont use more outputs than needed
         }
         
         let paymentOutput = BTCTransactionOutput(value: amount, address: destinationAddress)

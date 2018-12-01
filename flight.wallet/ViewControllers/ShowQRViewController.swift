@@ -30,6 +30,8 @@ class ShowQRViewController: UIViewController {
         
         if let data = data {
             showQR(message: data)
+        } else {
+            showAlert(title: "No data", message: "Data field is empty")
         }
     }
     
@@ -42,8 +44,13 @@ class ShowQRViewController: UIViewController {
         
         filter.setValue(data, forKey: "inputMessage")
         filter.setValue("Q", forKey: "inputCorrectionLevel")
-            
-        qrcodeImage = filter.outputImage
+        
+        guard let encodedQR = filter.outputImage else {
+            showAlert(title: "QR Decode Error", message: "Can't create QR code: probably, tx is too large, try sending smaller amounts")
+            return
+        }
+        
+        qrcodeImage = encodedQR
     
         let scaleX = imgQRCode.frame.size.width / qrcodeImage.extent.size.width
         let scaleY = imgQRCode.frame.size.height / qrcodeImage.extent.size.height
