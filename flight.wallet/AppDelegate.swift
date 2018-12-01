@@ -99,14 +99,44 @@ extension AppDelegate {
         
         print("url", url)
         
+        debug("chain", url.queryParameters?["chain"] )
+        debug("data", url.queryParameters?["data"])
         
-        
-        
-        
-        
+        if let chain = url.queryParameters?["chain"] {
+            guard let data = url.queryParameters?["data"] else {
+                print("no data given")
+                return false
+            }
+            
+            if chain == "bitcoin" {
+                debug("utxo json", data)
+                
+                if let walletUpdate = BitcoinWalletUpdate(from: data) {
+                    wallet.update(update: walletUpdate)
+                } else {
+                    print("probably bad json, cant update", data)
+                }
+            }
+            
+        }
+       
         
         return true
     }
 }
 
 
+extension URL {
+    public var queryParameters: [String: String]? {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: true), let queryItems = components.queryItems else {
+            return nil
+        }
+        
+        var parameters = [String: String]()
+        for item in queryItems {
+            parameters[item.name] = item.value
+        }
+        
+        return parameters
+    }
+}

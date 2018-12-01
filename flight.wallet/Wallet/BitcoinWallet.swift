@@ -462,6 +462,8 @@ class BitcoinWallet: CryptoWallet {
     func sync(update: WalletUpdateInfo) -> Bool {
         guard update.type == .Bitcoin else { return false }
         
+        let myAddress = generateAddress(index: 1)!
+        
         let update = update as! BitcoinWalletUpdate
         
         print("addresses", update.newUnspents.map { output in output.address })
@@ -471,11 +473,11 @@ class BitcoinWallet: CryptoWallet {
         
         print("remove", update.newSpents)
         
-        // TODO return
+        let filteredNewUnspents = update.newUnspents.filter { $0.address != nil && $0.address! == myAddress }
+        
         storage.update(spent: update.newSpents)
         
-        return storage.update(newUnspents: update.newUnspents)
-        
+        return storage.update(newUnspents: filteredNewUnspents)
     }
     
     func update(transaction: BTCTransaction ) {
