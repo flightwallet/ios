@@ -48,7 +48,7 @@ class TransactionReceiptViewController: UIViewController {
                 
                 self.transaction = transaction
             }
-        
+            
             self.signedTx = currencyWallet.sign(tx: transaction!)
             
             debug("signed", self.signedTx)
@@ -68,6 +68,7 @@ class TransactionReceiptViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        debug("prepare for segue", segue.identifier)
         if let vc = segue.destination as? ShowQRViewController {
     
             if signedTx == nil {

@@ -102,24 +102,66 @@ extension AppDelegate {
         debug("chain", url.queryParameters?["chain"] )
         debug("data", url.queryParameters?["data"])
         
-        if let chain = url.queryParameters?["chain"] {
-            guard let data = url.queryParameters?["data"] else {
-                print("no data given")
-                return false
-            }
+        switch url.scheme {
+        case "bitcoin":
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let viewController = storyboard.instantiateViewController(withIdentifier: "TransactionReceiptViewController") as! TransactionReceiptViewController
+            let mainViewController = storyboard.instantiateViewController(withIdentifier: "MainViewController") as! MainViewController
+            let navController = UINavigationController.init(rootViewController: mainViewController)
             
-            if chain == "bitcoin" {
-                debug("utxo json", data)
-                
-                if let walletUpdate = BitcoinWalletUpdate(from: data) {
-                    wallet.update(update: walletUpdate)
-                } else {
-                    print("probably bad json, cant update", data)
+            if let window = self.window, let rootViewController = window.rootViewController {
+                var currentController = rootViewController
+                while let presentedController = currentController.presentedViewController {
+                    currentController = presentedController
                 }
+                
+                print("root", rootViewController)
+                print("current", currentController)
+                print("nav", navController)
+                
+                currentController.present(navController, animated: true, completion: nil)
+                
+                
+                if let wallet = Wallet.instance.wallets[.Bitcoin] as? BitcoinWallet {
+                    let (to, amount, _) = wallet.decode(url: url.absoluteString)!
+                    let tx = wallet.buildTx(to: to, value: amount > 0 ? amount : 0.01)
+                    
+                    viewController.parsedTx = url.absoluteString
+                    viewController.chain = .Bitcoin
+                    viewController.address = wallet.addresses[0]
+                    viewController.wallet = Wallet.instance
+                }
+                
+                
+                navController.pushViewController(viewController, animated: true)
             }
             
+            
+         
+            
+        case "flightwallet":
+            if let chain = url.queryParameters?["chain"] {
+                guard let data = url.queryParameters?["data"] else {
+                    print("no data given")
+                    return false
+                }
+                
+                if chain == "bitcoin" {
+                    debug("utxo json", data)
+                    
+                    if let walletUpdate = BitcoinWalletUpdate(from: data) {
+                        wallet.update(update: walletUpdate)
+                    } else {
+                        print("probably bad json, cant update", data)
+                    }
+                }
+                
+            }
+            
+        default:
+            print("dont know this scheme")
+            return false
         }
-       
         
         return true
     }

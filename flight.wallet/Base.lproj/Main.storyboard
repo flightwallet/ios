@@ -127,7 +127,7 @@
         <!--Main View Controller-->
         <scene sceneID="qLW-67-U0c">
             <objects>
-                <viewController id="mA9-Ji-eLi" customClass="MainViewController" customModule="flight_wallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mA9-Ji-eLi" customClass="MainViewController" customModule="flight_wallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="k3L-Hs-nIf">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -544,7 +544,7 @@
         <!--Transaction Receipt View Controller-->
         <scene sceneID="oo8-Jh-X9p">
             <objects>
-                <viewController id="w3Z-OU-WsJ" customClass="TransactionReceiptViewController" customModule="flight_wallet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TransactionReceiptViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="w3Z-OU-WsJ" customClass="TransactionReceiptViewController" customModule="flight_wallet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="J7y-Tx-0Ht">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
