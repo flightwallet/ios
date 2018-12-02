@@ -102,6 +102,42 @@ extension WalletViewController: UITableViewDataSource, UITableViewDelegate {
         
     }
     
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView,
+                   leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+        ->   UISwipeActionsConfiguration? {
+            // receive
+            
+            let action = UIContextualAction(style: .normal, title: "Receive") { (action, view, completionHandler) in
+                // Update data source when user taps action
+                print("receive from ", self.addresses[indexPath.row])
+                completionHandler(true)
+            }
+            
+            //            action.image =
+            action.backgroundColor = .blue
+            let configuration = UISwipeActionsConfiguration(actions: [action])
+            return configuration
+    }
+    
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath)
+        ->   UISwipeActionsConfiguration? {
+            // send
+            
+            let action = UIContextualAction(style: .normal, title: "Send") { (action, view, completionHandler) in
+                // Update data source when user taps action
+                print("send from ", self.addresses[indexPath.row])
+                completionHandler(true)
+            }
+            
+            //            action.image =
+            action.backgroundColor = .green
+            let configuration = UISwipeActionsConfiguration(actions: [action])
+            return configuration
+    }
+    
     func tableView(_ tableView: UITableView, canPerformAction action:
         Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
         if (action.description == "copy:") {
