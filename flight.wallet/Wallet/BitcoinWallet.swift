@@ -568,12 +568,7 @@ class BitcoinUnspentsStorage: NSObject, BTCTransactionBuilderDataSource {
     }
     
     convenience init(defaults: UserDefaults = .standard) {
-//        guard let addr_str = address.body else {
-//            fatalError("Can't init address")
-//        }
-        
-        
-        let utxos = defaults.array(forKey: BitcoinUnspentsStorage.storageKey) as? [UTXO] ?? []
+        let utxos = BitcoinUnspentsStorage.loadState(defaults: defaults)
         
         let outputs = utxos.map { utxo -> BTCTransactionOutput in
             if let output = utxo.toOutput() {
@@ -583,7 +578,20 @@ class BitcoinUnspentsStorage: NSObject, BTCTransactionBuilderDataSource {
             }
         }
         
+        print("saved utxos", utxos)
+        
         self.init(outputs)
+        self.defaults = defaults
+    }
+    
+    static func loadState(defaults: UserDefaults) -> [UTXO] {
+        guard let data = defaults.value(forKey: BitcoinUnspentsStorage.storageKey) as? Data else { return [] }
+        
+        if let utxos = try? PropertyListDecoder().decode([UTXO].self, from: data) {
+            return utxos
+        } else {
+            return []
+        }
     }
     
     func saveState() {
@@ -591,7 +599,12 @@ class BitcoinUnspentsStorage: NSObject, BTCTransactionBuilderDataSource {
         
         let utxo = outputs.map(UTXO.init)
         
-        defaults.set(utxo, forKey: BitcoinUnspentsStorage.storageKey)
+        print("save", utxo)
+        if let encoded_utxo = try? PropertyListEncoder().encode(utxo) {
+            defaults.set(encoded_utxo, forKey: BitcoinUnspentsStorage.storageKey)
+        } else {
+            fatalError("Cant save UTXO")
+        }
     }
     
     func update(spent: [UTXO]) {
@@ -628,6 +641,8 @@ class BitcoinUnspentsStorage: NSObject, BTCTransactionBuilderDataSource {
         print("old", outputs)
         
         outputs += newOutputs
+        
+        saveState()
         
         return newOutputs.count > 0
     }
