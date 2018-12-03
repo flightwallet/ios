@@ -34,6 +34,24 @@ class WalletViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
+        
+        self.becomeFirstResponder() // To get shake gesture
+    }
+    
+    // We are willing to become first responder to get shake motion
+    override var canBecomeFirstResponder: Bool {
+        get {
+            return true
+        }
+    }
+    
+    // Enable detection of shake motion
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake,
+            let appDelegate = UIApplication.shared.delegate as? AppDelegate, let token = appDelegate.deviceToken {
+            UIPasteboard.general.string = token
+            showAlert(title: "Device Token Copied!", message: token)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
