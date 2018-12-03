@@ -102,6 +102,13 @@ extension AppDelegate {
         debug("chain", url.queryParameters?["chain"] )
         debug("data", url.queryParameters?["data"])
         
+        if !wallet.isLoaded {
+            wallet.initCrypto()
+            wallet.loaded {
+                
+            }
+        }
+        
         switch url.scheme {
         case "bitcoin":
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -122,10 +129,7 @@ extension AppDelegate {
                 currentController.present(navController, animated: true, completion: nil)
                 
                 
-                if let wallet = Wallet.instance.wallets[.Bitcoin] as? BitcoinWallet {
-                    let (to, amount, _) = wallet.decode(url: url.absoluteString)!
-                    let tx = wallet.buildTx(to: to, value: amount > 0 ? amount : 0.01)
-                    
+                if let wallet = self.wallet.wallets[.Bitcoin] as? BitcoinWallet {
                     viewController.parsedTx = url.absoluteString
                     viewController.chain = .Bitcoin
                     viewController.address = wallet.addresses[0]
