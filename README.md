@@ -1,5 +1,7 @@
 # [Flight wallet](https://flightwallet) iOS app          
-Mobile cold wallet that works without internet. Read more at https://flightwallet.org.
+Mobile cold wallet that works without internet. Read more at https://flightwallet.github.io.
+
+**NOT UPDATED** Check out https://walletconnect.org/ instead.
 
 [<img src="https://raw.githubusercontent.com/morejust/foundation/master/madebymorejust.png" width="100">](https://morejust.foundation/?from=flight.wallet)
 
